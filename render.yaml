@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: parcel-log-pro
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn server:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    disk:
+      name: parcel-data
+      mountPath: /data
+      sizeGB: 1

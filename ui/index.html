@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parcel Log Pro</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="AusPost_logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Sans+Pro:wght@400;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* AusPost Brand Colors */
+      --auspost-red: #DC1928;
+      --auspost-red-dark: #B81423;
+      --auspost-red-light: #F8E8E9;
+      --auspost-charcoal: #212129;
+      --auspost-black: #000000;
+      --auspost-gray: #6B7280;
+      --auspost-gray-light: #9CA3AF;
+      --auspost-gray-lighter: #E5E7EB;
+      --auspost-border: #D1D5DB;
+      --auspost-white: #FFFFFF;
+      --auspost-bg: #F9FAFB;
+      --auspost-success: #059669;
+      --auspost-success-light: #D1FAE5;
+      --auspost-warning: #F59E0B;
+      --auspost-warning-light: #FEF3C7;
+      
+      /* Theme Variables - Light Mode (AusPost Style) */
+      --bg: #FFFFFF;
+      --surface-deep: #FFFFFF;
+      --surface: #FFFFFF;
+      --surface-raised: #F9FAFB;
+      --surface-input: #FFFFFF;
+      --line: #E5E7EB;
+      --line-subtle: #F3F4F6;
+      --ink: #111827;
+      --ink-dim: #6B7280;
+      --ink-faint: #9CA3AF;
+      --brand-red: #DC1928;
+      --brand-red-hover: #B81423;
+      --brand-red-light: #F8E8E9;
+      --success: #059669;
+      --success-light: #D1FAE5;
+      --success-hover: #047857;
+      --warning: #F59E0B;
+      --warning-light: #FEF3C7;
+      --accent-blue: #2563EB;
+      --accent-blue-light: #DBEAFE;
+      --tag-hole: #E5E7EB;
+      --stamp-green: #059669;
+      --stamp-orange: #DC1928;
+      --auspost-border-lighter: #E5E7EB;
+      --radius: 4px;
+      --radius-sm: 3px;
+      --radius-lg: 6px;
+      --font-display:'Source Sans 3','Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      --font-body:'Source Sans 3','Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      --font-mono:'Roboto Mono','Courier New',monospace;
+      color-scheme:light;
+    }
+    [data-theme="dark"]{
+      /* Theme Variables - Dark Mode */
+      --bg: #111827;
+      --surface-deep: #1F2937;
+      --surface: #1F2937;
+      --surface-raised: #374151;
+      --surface-input: #111827;
+      --line: #374151;
+      --line-subtle: #4B5563;
+      --ink: #F9FAFB;
+      --ink-dim: #D1D5DB;
+      --ink-faint: #9CA3AF;
+      --brand-red: #DC1928;
+      --brand-red-hover: #EF4444;
+      --brand-red-light: rgba(220,25,40,.2);
+      --success: #10B981;
+      --success-light: rgba(16,185,129,.2);
+      --success-hover: #34D399;
+      --warning: #FBBF24;
+      --warning-light: rgba(251,191,36,.2);
+      --accent-blue: #3B82F6;
+      --accent-blue-light: rgba(59,130,246,.2);
+      --tag-hole: #374151;
+      --stamp-green: #10B981;
+      --stamp-orange: #EF4444;
+
+      /* AusPost Overrides for Dark Mode */
+      --auspost-red: #DC1928;
+      --auspost-red-dark: #EF4444;
+      --auspost-red-light: rgba(220,25,40,.2);
+      --auspost-charcoal: #F9FAFB;
+      --auspost-black: #FFFFFF;
+      --auspost-gray: #9CA3AF;
+      --auspost-gray-light: #6B7280;
+      --auspost-gray-lighter: #374151;
+      --auspost-border: #374151;
+      --auspost-border-lighter: #283548;
+      --auspost-white: #1F2937;
+      --auspost-bg: #111827;
+      --auspost-success: #10B981;
+      --auspost-success-light: rgba(16,185,129,.2);
+      --auspost-warning: #FBBF24;
+      --auspost-warning-light: rgba(251,191,36,.2);
+      color-scheme:dark;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;overflow:hidden;}
+    body{background:var(--auspost-bg);color:var(--ink);font-family:var(--font-body);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5;}
+    [data-theme="dark"] body{background:var(--bg);color:var(--ink);}
+    input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+    input[type=number]{-moz-appearance:textfield;}
+    button{font-family:var(--font-body);}
+
+    /* Animations */
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes slideUp {
+      0% { transform: translateY(10px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes slideDown {
+      0% { transform: translateY(-10px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .animate-fade-in { animation: fadeIn 0.2s ease-out; }
+    .animate-slide-up { animation: slideUp 0.3s ease-out; }
+    .animate-slide-down { animation: slideDown 0.3s ease-out; }
+    .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+    /* ═══════════ TOP HEADER (AusPost Style) ═══════════ */
+    .top-bar{
+      background:var(--auspost-white);border-bottom:2px solid var(--auspost-red);
+      padding:15px 0 0;display:flex;align-items:stretch;justify-content:space-between;
+      flex-shrink:0;height:75px;box-shadow:0 1px 3px rgba(0,0,0,.08);
+    }
+    [data-theme="dark"] .top-bar{background:var(--surface-deep);border-bottom-color:var(--auspost-red);}
+    .drag-region{
+      flex:1;display:flex;align-items:center;padding:0 20px;gap:16px;
+      -webkit-app-region:drag;app-region:drag;
+      cursor:default;min-width:0;
+    }
+    .brand-section{display:flex;align-items:center;gap:14px;pointer-events:none;flex-shrink:0;order:2;}
+    .brand-logo{height:40px;width:auto;}
+    .brand-divider{display:none;border-left:1px solid var(--auspost-border);height:28px;margin-left:14px;padding-left:14px;}
+    @media (min-width: 640px) {
+      .brand-divider{display:block;}
+    }
+    .brand-title{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-0.02em;line-height:1.2;color:var(--auspost-charcoal);display:flex;flex-direction:column;justify-content:center;white-space:nowrap;align-self:center;height:40px;}
+    .brand-title small{display:block;font-family:var(--font-body);font-size:13px;color:var(--auspost-gray);font-weight:400;margin-top:2px;letter-spacing:0.01em;}
+
+    /* Desktop Navigation - AusPost Style */
+    .desktop-nav{display:none;align-items:center;gap:2px;margin-left:20px;}
+    .nav-tab{
+      display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:var(--radius-sm);
+      font-size:14px;font-weight:600;font-family:var(--font-body);color:var(--auspost-gray);
+      cursor:pointer;transition:all .2s;background:transparent;border:none;position:relative;
+    }
+    .nav-tab:hover{background:var(--auspost-bg);color:var(--auspost-charcoal);}
+    .nav-tab.active{background:var(--auspost-red);color:#fff;font-weight:700;}
+    .nav-tab.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--auspost-red-dark);}
+    .nav-tab svg{width:18px;height:18px;flex-shrink:0;}
+
+    .hdr-actions{display:flex;align-items:center;gap:10px;padding-right:20px;-webkit-app-region:no-drag;app-region:no-drag;flex-shrink:0;}
+    .stat-pill{background:var(--auspost-white);border:1px solid var(--auspost-border);height:36px;padding:0 14px;border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:13px;color:var(--auspost-gray);display:flex;align-items:center;gap:8px;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.05);}
+    .stat-pill b{color:var(--auspost-red);font-size:15px;font-weight:700;}
+    .hdr-btn{background:var(--auspost-white);border:1px solid var(--auspost-border);color:var(--auspost-gray);height:36px;padding:0 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .2s;font-family:var(--font-body);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.05);}
+    .hdr-btn:hover{color:var(--auspost-charcoal);border-color:var(--auspost-gray-light);background:var(--auspost-bg);}
+    .hdr-btn.excel{background:#107C41;border-color:#0E6B37;color:#fff;}
+    .hdr-btn.excel:hover{background:#0E6B37;}
+    .hdr-btn.invoice{background:#2563EB;border-color:#1D4ED8;color:#fff;}
+    .hdr-btn.invoice:hover{background:#1D4ED8;}
+    .hdr-btn svg{width:18px;height:18px;flex-shrink:0;}
+
+    /* User Profile - AusPost Style */
+    .user-profile{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--auspost-white);border:1px solid var(--auspost-border);border-radius:var(--radius-sm);box-shadow:0 1px 2px rgba(0,0,0,.05);}
+    .user-avatar{width:38px;height:38px;border-radius:50%;background:var(--auspost-red-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:var(--auspost-red);border:2px solid var(--auspost-red);}
+    .user-info{text-align:right;display:none;}
+    @media (min-width: 640px) {
+      .user-info{display:block;}
+    }
+    .user-name{font-size:14px;font-weight:700;color:var(--auspost-charcoal);line-height:1.2;}
+    .user-role{font-size:12px;color:var(--auspost-gray);line-height:1.2;font-weight:500;}
+
+    /* Window Controls */
+    .win-controls{display:flex;align-items:stretch;-webkit-app-region:no-drag;app-region:no-drag;height:100%;}
+    .win-btn{background:transparent;border:none;color:var(--auspost-gray);width:50px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+    .win-btn:hover{background:var(--auspost-bg);color:var(--auspost-charcoal);}
+    .win-btn.close:hover{background:var(--auspost-red);color:#fff;}
+    .win-btn svg{width:20px;height:20px;}
+
+    /* ═══════════ MIDDLE CONTENT (scrollable) ═══════════ */
+    .app-body{flex:1;overflow-y:auto;overflow-x:hidden;background:var(--auspost-bg);}
+    [data-theme="dark"] .app-body{background:var(--bg);}
+    .app-body::-webkit-scrollbar{width:8px;}
+    .app-body::-webkit-scrollbar-track{background:var(--auspost-bg);}
+    .app-body::-webkit-scrollbar-thumb{background:var(--auspost-gray-lighter);border-radius:4px;}
+    .app-body::-webkit-scrollbar-thumb:hover{background:var(--auspost-gray-light);}
+    .content-wrap{width:100%;max-width:1200px;margin:0 auto;padding:8px 24px 100px;transition:max-width .2s ease;}
+
+    /* Responsive Wide Screen Layout for Tab 1 (Entry) - AusPost Style */
+    .entry-layout{display:flex;flex-direction:column;gap:24px;max-width:800px;margin:0 auto;}
+    @media (min-width: 960px){
+      .entry-layout{max-width:900px;}
+    }
+
+    .tab-view{display:none;animation:fadeUp .2s ease;}
+    .tab-view.active{display:block;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+    /* ═══════════ BOTTOM TAB BAR (AusPost Style) ═══════════ */
+    .bottom-tabs{
+      position:fixed;
+      bottom:16px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:100;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:5px 6px;
+      background:var(--auspost-white);
+      border:1px solid var(--auspost-border);
+      border-radius:10px;
+      box-shadow:0 4px 16px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+      backdrop-filter:blur(8px);
+      width:max-content;
+      max-width:calc(100vw - 32px);
+    }
+    [data-theme="dark"] .bottom-tabs{
+      background:var(--surface);
+      border-color:var(--line);
+      box-shadow:0 4px 16px rgba(0,0,0,0.35);
+    }
+    .btab{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:8px 16px;
+      border-radius:7px;
+      font-size:13px;
+      font-weight:600;
+      font-family:var(--font-body);
+      color:var(--auspost-gray);
+      cursor:pointer;
+      transition:all .18s ease;
+      background:transparent;
+      border:none;
+      white-space:nowrap;
+    }
+    [data-theme="dark"] .btab{
+      color:var(--ink-dim);
+    }
+    .btab:hover{
+      background:var(--auspost-gray-light);
+      color:var(--auspost-charcoal);
+    }
+    [data-theme="dark"] .btab:hover{
+      background:rgba(255,255,255,0.06);
+      color:var(--ink);
+    }
+    .btab.active{
+      background:var(--auspost-red);
+      color:#fff;
+      font-weight:700;
+      box-shadow:0 2px 8px rgba(220,25,40,0.25);
+    }
+    .btab svg{
+      width:16px;
+      height:16px;
+      flex-shrink:0;
+    }
+
+    /* ═══════════ HERO STAT CARDS (AusPost Style) ═══════════ */
+    .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;padding:0 10px;}
+    .hero-card{background:var(--auspost-white);border:1px solid var(--auspost-border);border-radius:var(--radius-lg);padding:18px 20px;position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+    [data-theme="dark"] .hero-card{background:var(--surface);border-color:var(--line);}
+    .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+    .hero-card.c-orange::before{background:var(--auspost-red);}
+    .hero-card.c-green::before{background:var(--auspost-success);}
+    .hero-card .lbl{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;color:var(--auspost-gray);margin-bottom:6px;}
+    [data-theme="dark"] .hero-card .lbl{color:var(--ink-dim);}
+    .hero-card .val{font-family:var(--font-display);font-size:32px;font-weight:700;line-height:1.1;color:var(--auspost-charcoal);}
+    [data-theme="dark"] .hero-card .val{color:var(--ink);}
+    .hero-card .val.mono{font-family:var(--font-mono);font-size:26px;}
+    .hero-card .sub{font-size:12px;color:var(--auspost-gray);margin-top:6px;font-weight:500;}
+    [data-theme="dark"] .hero-card .sub{color:var(--ink-dim);}
+
+    /* ═══════════ FORM PANEL (AusPost Style) ═══════════ */
+    .form-card{background:var(--auspost-white);border:1px solid var(--auspost-border);border-radius:var(--radius-lg);padding:20px;margin:0 10px;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+    [data-theme="dark"] .form-card{background:var(--surface);border-color:var(--line);}
+    .form-heading{font-family:var(--font-display);font-size:16px;text-transform:uppercase;letter-spacing:0.04em;color:var(--auspost-charcoal);margin-bottom:16px;display:flex;align-items:center;gap:8px;font-weight:700;}
+    [data-theme="dark"] .form-heading{color:var(--ink);}
+    .form-heading svg{width:18px;height:18px;color:var(--auspost-red);}
+
+    .date-row{display:flex;gap:10px;margin-bottom:16px;}
+    .input-date{flex:1;background:var(--surface-input);border:1px solid var(--auspost-border);color:var(--ink);border-radius:var(--radius-sm);padding:10px 14px;font-family:var(--font-body);font-size:14px;outline:none;transition:border-color .2s;}
+    [data-theme="dark"] .input-date{background:var(--surface-input);border-color:var(--line);color:var(--ink);}
+    .input-date:focus{border-color:var(--auspost-red);box-shadow:0 0 0 3px rgba(220,25,40,.1);}
+    .qd-btn{background:var(--auspost-white);border:1px solid var(--auspost-border);color:var(--auspost-gray);padding:0 14px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
+    [data-theme="dark"] .qd-btn{background:var(--surface);border-color:var(--line);color:var(--ink-dim);}
+    .qd-btn:hover{color:var(--auspost-charcoal);border-color:var(--auspost-gray-light);background:var(--auspost-bg);}
+    [data-theme="dark"] .qd-btn:hover{color:var(--ink);border-color:var(--ink-dim);background:var(--surface-raised);}
+
+    /* Stepper Cards - AusPost Style */
+    .steppers{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+    .scard{background:var(--auspost-bg);border:1px solid var(--auspost-border);border-radius:var(--radius-sm);padding:14px 16px;transition:border-color .2s,box-shadow .2s;}
+    .scard:focus-within{border-color:var(--auspost-gray-light);box-shadow:0 0 0 3px rgba(0,0,0,.05);}
+    .scard.express{border-color:rgba(220,25,40,.3);background:var(--auspost-red-light);}
+    .scard.express:focus-within{border-color:var(--auspost-red);box-shadow:0 0 0 3px rgba(220,25,40,.15);}
+    .scard-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+    .scard-title{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:var(--auspost-gray);}
+    .scard.express .scard-title{color:var(--auspost-red);}
+    .rate-tag{font-family:var(--font-mono);font-size:10px;color:var(--auspost-gray-light);font-weight:500;}
+    .sctl{display:flex;align-items:center;gap:10px;}
+    .sbtn{background:var(--auspost-white);border:1px solid var(--auspost-border);color:var(--auspost-charcoal);width:40px;height:40px;border-radius:var(--radius-sm);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;font-weight:700;}
+    .sbtn:hover:not(:disabled){background:var(--auspost-bg);border-color:var(--auspost-gray-light);color:var(--auspost-red);}
+    .sbtn:disabled{opacity:.4;cursor:not-allowed;}
+    .sinp{flex:1;width:100%;min-width:0;background:var(--auspost-white);border:1px solid var(--auspost-border);border-radius:var(--radius-sm);color:var(--auspost-charcoal);font-family:var(--font-display);font-size:22px;font-weight:700;text-align:center;padding:6px 8px;outline:none;transition:border-color .2s;}
+    .sinp:focus{border-color:var(--auspost-red);box-shadow:0 0 0 3px rgba(220,25,40,.1);}
+
+    /* Transfer Section - AusPost Style */
+    .xfer-box{background:var(--auspost-bg);border:1px solid var(--auspost-border);border-radius:var(--radius-sm);padding:16px;margin-bottom:18px;}
+    .xfer-head{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;color:var(--auspost-gray);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+    .xfer-head svg{width:14px;height:14px;}
+    .xfer-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .xfer-select{width:100%;background:var(--surface-input);border:1px solid var(--auspost-border);color:var(--ink);border-radius:var(--radius-sm);padding:10px 12px;font-family:var(--font-body);font-size:14px;outline:none;cursor:pointer;height:44px;transition:border-color .2s;}
+    .xfer-select:focus{border-color:var(--auspost-red);box-shadow:0 0 0 3px rgba(220,25,40,.1);}
+    .driver-box{margin-top:14px;padding-top:14px;border-top:1px dashed var(--auspost-border);animation:fadeUp .2s ease;}
+    .driver-box label{display:block;font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;color:var(--auspost-gray);margin-bottom:6px;}
+    .input-text{width:100%;background:var(--surface-input);border:1px solid var(--auspost-border);color:var(--ink);border-radius:var(--radius-sm);padding:10px 14px;font-family:var(--font-body);font-size:14px;outline:none;transition:border-color .2s;}
+    [data-theme="dark"] .input-text{background:var(--surface-input);border-color:var(--line);color:var(--ink);}
+    .input-text:focus{border-color:var(--auspost-red);box-shadow:0 0 0 3px rgba(220,25,40,.1);}
+
+    /* Summary Bar - AusPost Style */
+    .summary-bar{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:16px;border-top:1px solid var(--auspost-border);}
+    .pay-preview{font-family:var(--font-body);font-size:13px;color:var(--auspost-gray);font-weight:500;}
+    .pay-preview b{color:var(--auspost-red);font-size:20px;margin-left:6px;font-weight:700;}
+    .btn-add{background:var(--auspost-red);color:#fff;border:none;border-radius:var(--radius-sm);padding:12px 28px;font-family:var(--font-display);font-size:15px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 2px 4px rgba(220,25,40,.2);}
+    .btn-add:hover:not(:disabled){background:var(--auspost-red-dark);transform:translateY(-1px);box-shadow:0 4px 8px rgba(220,25,40,.3);}
+    .btn-add:active:not(:disabled){transform:translateY(0);}
+    .btn-add:disabled{opacity:.5;cursor:not-allowed;box-shadow:none;}
+
+    /* Section Heading - AusPost Style */
+    .sec-head{font-family:var(--font-display);font-size:15px;text-transform:uppercase;letter-spacing:0.04em;color:var(--auspost-gray);margin:24px 10px 12px;display:flex;align-items:center;justify-content:space-between;font-weight:700;}
+    .sec-head::after{content:'';flex:1;height:1px;background:var(--auspost-border);margin-left:12px;}
+
+    /* Entry Cards - AusPost Style */
+    .ecard{background:var(--auspost-white);border:1px solid var(--auspost-border);border-radius:var(--radius-lg);padding:16px 18px 16px 32px;margin:0 10px 12px;position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:all .2s;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+    [data-theme="dark"] .ecard{background:var(--surface);border-color:var(--line);}
+    .ecard:hover{border-color:var(--auspost-gray-light);box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-1px);}
+    .ecard.is-paid{border-color:var(--auspost-success);background:var(--auspost-success-light);opacity:.95;}
+    [data-theme="dark"] .ecard.is-paid{background:rgba(16,185,129,0.1);border-color:var(--success);}
+    .ecard .hole{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;background:var(--tag-hole);border:1px solid var(--auspost-border);}
+    [data-theme="dark"] .ecard .hole{background:var(--line);border-color:var(--line);}
+    .stamp-paid{position:absolute;top:12px;right:16px;border:2px solid var(--auspost-success);color:var(--auspost-success);font-family:var(--font-display);font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:0.08em;padding:3px 8px;border-radius:4px;transform:rotate(-5deg);background:var(--auspost-white);}
+    [data-theme="dark"] .stamp-paid{background:var(--surface-deep);color:var(--success);border-color:var(--success);}
+    .ecard-main{flex:1;}
+    .ecard-date{font-family:var(--font-display);font-size:17px;font-weight:700;letter-spacing:0.01em;color:var(--auspost-charcoal);margin-bottom:6px;}
+    [data-theme="dark"] .ecard-date{color:var(--ink);}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+    .chip{background:var(--auspost-bg);border:1px solid var(--auspost-border);color:var(--auspost-gray);font-family:var(--font-body);font-size:11px;padding:3px 8px;border-radius:var(--radius-sm);font-weight:500;}
+    .chip.exp{border-color:var(--auspost-red);color:var(--auspost-red);background:var(--auspost-red-light);font-weight:600;}
+    .chip.xfr{border-color:#2563EB;color:#2563EB;background:var(--accent-blue-light);}
+    .driver-tag{font-weight:600;color:#3B82F6;}
+    .ecard-period{font-family:var(--font-mono);font-size:11px;color:var(--auspost-success);margin-top:6px;font-weight:600;}
+    .ecard-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+    .ecard-pay{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--auspost-charcoal);}
+    .btn-paid{background:var(--auspost-white);border:1px solid var(--auspost-border);color:var(--auspost-gray);padding:5px 12px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;}
+    .btn-paid:hover{color:var(--auspost-charcoal);border-color:var(--auspost-gray-light);background:var(--auspost-bg);}
+    .btn-card-edit{background:transparent;border:1px solid var(--auspost-border);color:var(--auspost-gray);padding:5px 12px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;}
+    .btn-card-edit:hover{border-color:var(--auspost-red);color:var(--auspost-red);background:var(--auspost-red-light);}
+    .btn-del{background:none;border:none;color:var(--auspost-gray-light);font-size:11px;cursor:pointer;text-decoration:underline;padding:2px 4px;font-weight:500;}
+    .btn-del:hover{color:#DC2626;}
+    .btn-cancel-edit{background:var(--auspost-white);border:1px solid var(--auspost-border);color:var(--auspost-gray);padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-body);}
+    .btn-cancel-edit:hover{border-color:#DC2626;color:#DC2626;background:rgba(220,38,38,.05);}
+    .btn-danger{background:transparent;border:1px solid #DC2626;color:#DC2626;padding:10px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+    .btn-danger:hover{background:#DC2626;color:#fff;}
+
+    /* Filter Bar - AusPost Style */
+    .filter-bar{background:var(--auspost-white);border:1px solid var(--auspost-border);border-radius:var(--radius-lg);padding:12px 16px;margin:0 10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+    [data-theme="dark"] .filter-bar{background:var(--surface);border-color:var(--line);}
+    .fg{display:flex;align-items:center;gap:8px;}
+    .fbtn{background:var(--auspost-bg);border:1px solid var(--auspost-border);color:var(--auspost-gray);padding:6px 14px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;}
+    .fbtn:hover{color:var(--auspost-charcoal);border-color:var(--auspost-gray-light);}
+    .fbtn.active{background:var(--auspost-red);color:#fff;border-color:var(--auspost-red);}
+    .search-in{background:var(--surface-input);border:1px solid var(--auspost-border);color:var(--ink);padding:8px 12px;border-radius:var(--radius-sm);font-size:13px;outline:none;width:220px;transition:border-color .2s;}
+    .search-in:focus{border-color:var(--auspost-red);box-shadow:0 0 0 3px rgba(220,25,40,.1);}
+
+    /* Claims Grid - AusPost Style */
+    .claims-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 10px 20px;}
+    .claim-box{background:var(--auspost-white);border:1px solid var(--auspost-border);border-radius:var(--radius-lg);padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+    [data-theme="dark"] .claim-box{background:var(--surface);border-color:var(--line);}
+    .claim-box .title{font-family:var(--font-body);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;color:var(--auspost-gray);margin-bottom:8px;}
+    .claim-box .amount{font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--auspost-charcoal);line-height:1.1;}
+    .claim-box .amount.unpaid{color:var(--auspost-red);}
+    .claim-box .amount.paid{color:var(--auspost-success);}
+    .claim-actions{background:var(--auspost-white);border:1px solid var(--auspost-border);border-radius:var(--radius-lg);padding:18px;margin:0 10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+    [data-theme="dark"] .claim-actions{background:var(--surface);border-color:var(--line);}
+    .btn-pay-all{background:var(--auspost-success);color:#fff;border:1px solid var(--auspost-success);padding:12px 20px;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .2s;font-family:var(--font-body);box-shadow:0 2px 4px rgba(5,150,105,.2);}
+    .btn-pay-all:hover{background:var(--success-hover);transform:translateY(-1px);box-shadow:0 4px 8px rgba(5,150,105,.3);}
+    .btn-pay-all svg{width:16px;height:16px;}
+    .driver-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+    .driver-table th{padding:10px 8px;border-bottom:2px solid var(--auspost-border);color:var(--auspost-gray);text-align:left;font-family:var(--font-body);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.02em;}
+    .driver-table td{padding:10px 8px;border-bottom:1px solid var(--auspost-border-lighter);}
+
+    /* Settings Modal - AusPost Style */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeUp .2s ease;}
+    .modal{background:var(--auspost-white);border:1px solid var(--auspost-border);border-radius:var(--radius-lg);padding:28px;width:100%;max-width:420px;box-shadow:0 10px 40px rgba(0,0,0,.15);}
+    .modal h3{font-family:var(--font-display);text-transform:uppercase;letter-spacing:0.04em;font-size:20px;color:var(--auspost-charcoal);margin-bottom:24px;font-weight:700;}
+    .modal-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+    .modal-field label{display:block;font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;color:var(--auspost-gray);margin-bottom:8px;}
+    .modal-field input{width:100%;background:var(--surface-input);border:1px solid var(--auspost-border);color:var(--ink);border-radius:var(--radius-sm);padding:12px 14px;font-family:var(--font-body);font-size:14px;outline:none;transition:border-color .2s;}
+    .modal-field input:focus{border-color:var(--auspost-red);box-shadow:0 0 0 3px rgba(220,25,40,.1);}
+    .modal-btns{display:flex;gap:14px;margin-top:24px;}
+    .modal-btns button{flex:1;padding:12px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--auspost-border);transition:all .2s;}
+    .modal-btns .save{background:var(--auspost-red);color:#fff;border:none;}
+    .modal-btns .save:hover{background:var(--auspost-red-dark);}
+    .modal-btns .cancel{background:transparent;color:var(--auspost-gray);}
+    .modal-btns .cancel:hover{color:var(--auspost-charcoal);border-color:var(--auspost-gray-light);}
+    .danger-section{text-align:center;margin-top:24px;padding-top:20px;border-top:1px dashed var(--auspost-border);}
+    .btn-danger{background:transparent;border:1px solid #DC2626;color:#DC2626;padding:10px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+    .btn-danger:hover{background:#DC2626;color:#fff;}
+
+    /* Auth Modal & User Bar - AusPost Style */
+    .user-pill{display:flex;align-items:center;gap:8px;background:var(--auspost-white);border:1px solid var(--auspost-border);height:30px;padding:0 12px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:12px;color:var(--auspost-gray);}
+    .user-name-text b{color:var(--auspost-charcoal);font-weight:700;}
+    .user-btn-logout{background:transparent;border:none;color:var(--auspost-red);cursor:pointer;font-family:var(--font-body);font-size:11px;font-weight:700;padding:3px 6px;border-radius:var(--radius-sm);transition:all .2s;}
+    .user-btn-logout:hover{background:var(--auspost-red-light);color:var(--auspost-red);}
+    .auth-btn{background:var(--auspost-red)!important;border-color:var(--auspost-red)!important;color:#fff!important;font-weight:700;}
+    .auth-btn:hover{background:var(--auspost-red-dark)!important;}
+    .auth-error{background:var(--auspost-red-light);border:1px solid var(--auspost-red);color:#DC1928;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;margin-bottom:16px;font-family:var(--font-body);font-weight:500;}
+
+    /* Empty State - AusPost Style */
+    .empty{text-align:center;padding:48px 20px;color:var(--auspost-gray);font-size:14px;background:var(--auspost-white);border:1px dashed var(--auspost-border);border-radius:var(--radius-lg);}
+    .empty .icon{font-size:40px;margin-bottom:8px;}
+
+    /* Saturday Shift Panel - AusPost Style */
+    .sat-banner{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-sm);padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;color:#D97706;animation:fadeUp .2s ease;}
+    .sat-banner svg{width:20px;height:20px;flex-shrink:0;}
+    .time-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+    .time-field label{display:block;font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;color:var(--auspost-gray);margin-bottom:6px;}
+    .input-time{width:100%;background:var(--surface-input);border:1px solid var(--auspost-border);color:var(--ink);border-radius:var(--radius-sm);padding:10px 14px;font-family:var(--font-body);font-size:14px;outline:none;transition:border-color .2s;}
+    [data-theme="dark"] .input-time{background:var(--surface-input);border-color:var(--line);color:var(--ink);}
+    .input-time:focus{border-color:var(--auspost-red);box-shadow:0 0 0 3px rgba(220,25,40,.1);}
+    .hours-summary{background:var(--auspost-bg);border:1px solid var(--auspost-border);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:14px;font-family:var(--font-body);font-size:13px;color:var(--auspost-gray);display:flex;justify-content:space-between;align-items:center;}
+    .hours-summary .hrs{color:var(--auspost-charcoal);font-size:18px;font-weight:700;}
+    .break-note{color:#D97706;font-size:12px;font-weight:600;}
+    .sat-parcels-note{font-size:13px;color:var(--auspost-gray);margin:12px 0;background:var(--surface-input);border:1px solid var(--auspost-border);border-radius:var(--radius-sm);padding:10px 14px;display:flex;align-items:center;gap:10px;}
+    .sat-parcels-note input{background:var(--auspost-white);border:1px solid var(--auspost-border);color:var(--ink);border-radius:var(--radius-sm);padding:5px 12px;width:80px;font-family:var(--font-body);font-size:14px;font-weight:700;text-align:center;outline:none;}
+    /* Saturday entry chip */
+    .chip.sat{border-color:#D97706;color:#D97706;background:rgba(245,158,11,.1);font-weight:600;}
+    .chip.rate{border-color:var(--auspost-success);color:var(--auspost-success);background:var(--auspost-success-light);font-weight:700;}
+
+    /* Shift Header & Hourly Rate Tracker - AusPost Style */
+    .shift-box{background:var(--auspost-bg);border:1px solid var(--auspost-border);border-radius:var(--radius-sm);padding:16px 18px;margin-bottom:16px;}
+    .shift-head{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;color:var(--auspost-gray);margin-bottom:0;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .shift-head-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1;overflow:hidden;}
+    .rate-pill{display:inline-flex;align-items:center;gap:6px;background:var(--auspost-success-light);color:var(--auspost-success);border:1px solid var(--auspost-success);padding:4px 10px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:13px;font-weight:700;}
+
+    /* Collapsible Toggles & Indicators - AusPost Style */
+    .clickable-toggle{cursor:pointer;user-select:none;transition:opacity .2s;}
+    .clickable-toggle:hover{opacity:.8;}
+    .toggle-arrow{display:inline-block;font-size:11px;transition:transform .2s ease;color:var(--auspost-gray-light);flex-shrink:0;}
+    .toggle-arrow.collapsed{transform:rotate(-90deg);}
+    .shift-summary-pill{background:var(--auspost-white);border:1px solid var(--auspost-border);padding:4px 10px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:12px;color:var(--auspost-gray);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+    /* Different Login Card - AusPost Style */
+    .login-box{background:var(--auspost-bg);border:1px solid var(--auspost-border);border-radius:var(--radius-sm);padding:14px 18px;margin-bottom:16px;transition:border-color .2s;}
+    .login-box:focus-within{border-color:var(--auspost-red);}
+    .login-chk-label{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;font-weight:600;color:var(--auspost-charcoal);user-select:none;}
+    .login-field{margin-top:12px;padding-top:12px;border-top:1px dashed var(--auspost-border);animation:fadeUp .2s ease;}
+
+    /* Monthly Work & Pay Calendar - AusPost Style */
+    .cal-card{background:var(--auspost-white);border:1px solid var(--auspost-border);border-radius:var(--radius-lg);padding:24px 26px;margin:0 10px 24px;box-shadow:0 2px 8px rgba(0,0,0,.08);width:100%;}
+    [data-theme="dark"] .cal-card{background:var(--surface);border-color:var(--line);}
+    .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:14px;}
+    .cal-nav{display:flex;align-items:center;gap:10px;}
+    .cal-btn{background:var(--auspost-white);border:1px solid var(--auspost-border);color:var(--auspost-charcoal);height:36px;padding:0 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+    .cal-btn:hover{background:var(--auspost-bg);border-color:var(--auspost-gray-light);}
+    .cal-month-title{font-family:var(--font-display);font-size:24px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:var(--auspost-charcoal);min-width:180px;text-align:center;}
+    .cal-legend{display:flex;align-items:center;gap:20px;font-size:13px;font-family:var(--font-body);color:var(--auspost-gray);font-weight:500;}
+    .cal-dot{width:14px;height:14px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:6px;}
+    .cal-dot.green{background:var(--auspost-success);box-shadow:0 0 6px rgba(5,150,105,.4);}
+    .cal-dot.red{background:var(--auspost-red);box-shadow:0 0 6px rgba(220,25,40,.4);}
+    .cal-summary-strip{display:flex;align-items:center;justify-content:space-between;background:var(--auspost-bg);border:1px solid var(--auspost-border);border-radius:var(--radius-sm);padding:10px 18px;margin-bottom:16px;font-family:var(--font-body);font-size:13px;color:var(--auspost-gray);flex-wrap:wrap;gap:10px;}
+    .cal-grid-head{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:8px;text-align:center;font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.04em;color:var(--auspost-gray);text-transform:uppercase;}
+    .cal-grid-head div{padding:8px 0;}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
+    .cal-day{background:var(--auspost-bg);border:1px solid var(--auspost-border);border-radius:var(--radius-sm);min-height:90px;padding:10px 12px;display:flex;flex-direction:column;justify-content:space-between;position:relative;transition:all .2s;cursor:default;}
+    .cal-day.empty{opacity:.25;background:transparent;border-style:dashed;}
+    .cal-day.today{border-color:var(--auspost-red);background:var(--auspost-red-light);box-shadow:inset 0 0 0 2px var(--auspost-red);}
+    .cal-day.worked{border-color:var(--auspost-border);cursor:pointer;}
+    .cal-day.worked:hover{border-color:var(--auspost-gray-light);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1);}
+    .cal-day-top{display:flex;align-items:center;justify-content:space-between;}
+    .cal-day-num{font-family:var(--font-body);font-size:16px;font-weight:700;color:var(--auspost-charcoal);}
+    .cal-day.empty .cal-day-num{color:var(--auspost-gray-light);}
+    .cal-indicator-circle{width:14px;height:14px;border-radius:50%;display:inline-block;flex-shrink:0;}
+    .cal-indicator-circle.green{background:var(--auspost-success);box-shadow:0 0 6px rgba(5,150,105,.5);}
+    .cal-indicator-circle.red{background:var(--auspost-red);box-shadow:0 0 6px rgba(220,25,40,.5);}
+    .cal-day-info{font-family:var(--font-body);font-size:12px;margin-top:6px;line-height:1.3;}
+    .cal-day-parcels{color:var(--auspost-gray);font-weight:500;font-size:11px;}
+    .cal-day-pay{font-weight:700;font-size:13px;margin-top:2px;}
+    .cal-day-pay.green{color:var(--auspost-success);}
+    .cal-day-pay.red{color:var(--auspost-red);}
+    .cal-day.paid{
+      border-color: var(--auspost-success);
+      background: var(--auspost-success-light);
+      position: relative;
+      overflow: hidden;
+    }
+    .cal-day.paid:hover{
+      border-color: var(--auspost-success);
+      box-shadow: 0 4px 12px rgba(5,150,105,.25);
+    }
+    /* Diagonal cutting line across the calendar day box */
+    .cal-day.paid::before{
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, transparent 48.2%, rgba(5,150,105,.2) 48.8%, rgba(5,150,105,.5) 50%, rgba(5,150,105,.2) 51.2%, transparent 51.8%);
+      border-radius: var(--radius-sm);
+      z-index: 1;
+    }
+    .cal-day-top, .cal-day-info{
+      position: relative;
+      z-index: 2;
+    }
+    .cal-day-detail-panel{margin-top:16px;padding:16px 18px;background:var(--auspost-bg);border:1px solid var(--auspost-border);border-radius:var(--radius-sm);animation:fadeUp .2s ease;font-size:13px;}
+
+    /* Toast - AusPost Style */
+    .toast-el{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--auspost-charcoal);border:1px solid var(--auspost-red);color:#fff;padding:12px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:popToast .25s ease;}
+    @keyframes popToast{from{transform:translate(-50%,15px);opacity:0;}to{transform:translate(-50%,0);opacity:1;}}
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════ TOP HEADER BAR (FRAMELESS DRAG REGION) ═══════════ -->
+  <header class="top-bar">
+    <div class="drag-region">
+      <div class="brand-section">
+        <img src="AusPost_logo.png" onerror="this.onerror=null; this.src='../public/images/AusPost_logo.png';" alt="Australia Post" class="brand-logo">
+        <div class="brand-divider">
+          <div class="brand-title">Parcel Log Pro<small>Contractor Portal</small></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="hdr-actions">
+      <div class="stat-pill" title="Unpaid balance">Owed: <b id="hdr-owed">$0.00</b></div>
+      <button class="hdr-btn excel" id="btn-excel" title="Export All Manifest to Excel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+        Excel
+      </button>
+      <button class="hdr-btn invoice" id="btn-invoice" title="Export Unpaid Invoice to Excel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Invoice
+      </button>
+      <button class="hdr-btn" id="btn-theme" title="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="hdr-btn" id="btn-gear" title="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      
+      <!-- User Profile -->
+      <div class="user-profile" id="user-profile" style="display:none;">
+        <div class="user-info">
+          <div class="user-name" id="user-name-display">Driver</div>
+          <div class="user-role">Van</div>
+        </div>
+        <div class="user-avatar" id="user-avatar">D</div>
+        <button class="hdr-btn" id="btn-logout" title="Sign Out" style="padding:0 8px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+      
+      <button type="button" class="hdr-btn auth-btn" id="btn-auth-open" style="display:none;" title="Sign In">
+        Sign In
+      </button>
+    </div>
+    
+    <div class="win-controls">
+      <button class="win-btn" id="btn-minimize" title="Minimize">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <button class="win-btn" id="btn-maximize" title="Maximize">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+      </button>
+      <button class="win-btn close" id="btn-close" title="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════ SCROLLABLE MIDDLE CONTENT ═══════════ -->
+  <div class="app-body">
+    <div class="content-wrap">
+
+      <!-- TAB 1: ENTRY -->
+      <div class="tab-view active" id="view-entry">
+        <!-- Hero Stats Cards all the way to top -->
+        <div class="hero-grid">
+          <div class="hero-card c-orange">
+            <div class="lbl">Today's Parcels</div>
+            <div class="val" id="s-today-parcels">0</div>
+            <div class="sub" id="s-today-pay">$0.00 earned today</div>
+          </div>
+          <div class="hero-card c-green">
+            <div class="lbl">Unpaid Balance</div>
+            <div class="val mono" id="s-owed">$0.00</div>
+            <div class="sub" id="s-rates-sub">$1.60 / $3.60 per parcel</div>
+          </div>
+        </div>
+
+        <div class="entry-layout">
+          <!-- Log Delivery Run Form -->
+          <div class="form-card">
+              <div class="form-heading">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Log Delivery Run
+              </div>
+              <div class="date-row">
+                <input type="date" class="input-date" id="f-date">
+                <button type="button" class="qd-btn" id="btn-today">Today</button>
+                <button type="button" class="qd-btn" id="btn-yesterday">Yesterday</button>
+              </div>
+
+              <!-- Saturday Shift Banner (shown on Saturday) -->
+              <div id="sat-banner" class="sat-banner" style="display:none">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>SATURDAY SHIFT — Hourly Rate Mode ($48.14/hr)</span>
+              </div>
+
+              <!-- 1. PARCEL COUNT FIRST: Standard & Express Steppers -->
+              <div id="weekday-steppers">
+                <div class="steppers">
+                  <div class="scard">
+                    <div class="scard-head"><span class="scard-title">Standard</span><span class="rate-tag" id="rt-n">@ $1.60</span></div>
+                    <div class="sctl"><button type="button" class="sbtn" id="b-dn">−</button><input type="number" min="0" inputmode="numeric" class="sinp" id="i-n" value="0"><button type="button" class="sbtn" id="b-un">+</button></div>
+                  </div>
+                  <div class="scard express">
+                    <div class="scard-head"><span class="scard-title">Express</span><span class="rate-tag" id="rt-e">@ $3.60</span></div>
+                    <div class="sctl"><button type="button" class="sbtn" id="b-de">−</button><input type="number" min="0" inputmode="numeric" class="sinp" id="i-e" value="0"><button type="button" class="sbtn" id="b-ue">+</button></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. TRANSFERS SECOND: Collapsed by default -->
+              <div class="xfer-box" style="margin-bottom:14px;">
+                <div class="xfer-head clickable-toggle" id="toggle-xfer-box" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;margin-bottom:0;">
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <span class="toggle-arrow collapsed" id="xfer-toggle-arrow">▶</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                    <span>Driver Transfer Received</span>
+                  </div>
+                  <span id="lbl-xfer-status" style="font-size:10px;color:var(--ink-faint);text-transform:none;">No transfer</span>
+                </div>
+                <div id="xfer-box-content" style="display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);">
+                  <div class="xfer-grid">
+                    <select class="xfer-select" id="sel-tt"><option value="None">No Transfer</option><option value="Normal">Normal Transfer</option><option value="Express">Express Transfer</option></select>
+                    <div class="sctl" id="wrap-xfer" style="opacity:.4"><button type="button" class="sbtn" id="b-dt" disabled>−</button><input type="number" min="0" inputmode="numeric" class="sinp" id="i-t" value="0" disabled><button type="button" class="sbtn" id="b-ut" disabled>+</button></div>
+                  </div>
+                  <div class="driver-box" id="box-driver" style="display:none">
+                    <label>Transferred From (Driver / Username)</label>
+                    <input type="text" class="input-text" id="i-driver" placeholder="e.g. Dave Miller / Van 14">
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. SHIFT TIME THIRD: Collapsible, time kept in header, suggested hours removed -->
+              <div class="shift-box">
+                <div class="shift-head clickable-toggle" id="toggle-shift-box" title="Click to collapse / expand shift hours">
+                  <div class="shift-head-left">
+                    <span class="toggle-arrow" id="shift-toggle-arrow">▼</span>
+                    <span id="shift-title-text" style="white-space:nowrap;flex-shrink:0;">⏱️ Shift Times</span>
+                    <span id="shift-summary-pill" class="shift-summary-pill">8:00 AM – 5:30 PM (9.0h)</span>
+                  </div>
+                  <span id="lbl-shift-right-stat" style="font-size:12px;color:var(--stamp-green);font-weight:600;white-space:nowrap;margin-left:auto;flex-shrink:0;">9.0 hrs</span>
+                </div>
+                <div id="shift-box-content" style="margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);">
+                  <div class="time-grid">
+                    <div class="time-field"><label>Start Time</label><input type="time" class="input-time" id="i-shift-start" value="08:00"></div>
+                    <div class="time-field"><label>End Time</label><input type="time" class="input-time" id="i-shift-end" value="17:30"></div>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-dim);margin-top:4px;">
+                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;" id="wrap-break-chk">
+                      <input type="checkbox" id="chk-shift-break" checked style="accent-color:var(--stamp-orange);cursor:pointer;width:15px;height:15px;">
+                      <span>Auto-deduct 30min break for 5h+ shifts</span>
+                    </label>
+                    <span id="lbl-shift-break-note" class="break-note">(30min break deducted)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. DELIVERED UNDER DIFFERENT LOGIN LAST -->
+              <div class="login-box" id="section-diff-login">
+                <label class="login-chk-label" for="chk-diff-login">
+                  <input type="checkbox" id="chk-diff-login" style="accent-color:var(--stamp-orange);width:17px;height:17px;cursor:pointer;">
+                  <span>Delivered under different login / account</span>
+                </label>
+                <div id="box-diff-login" class="login-field" style="display:none;">
+                  <label style="display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:6px;">
+                    Scanner Login / Alternate Account Name
+                  </label>
+                  <input type="text" list="recent-logins-list" class="input-text" id="i-diff-login" placeholder="e.g. Sub-contractor ID, Van 4 Login, Teammate Name">
+                  <datalist id="recent-logins-list"></datalist>
+                </div>
+              </div>
+
+              <div class="summary-bar">
+                <div class="pay-preview" style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
+                  <span>Pay: <b id="lbl-pay">$0.00</b></span>
+                  <span id="lbl-rate-display" class="rate-pill" style="display:none;">⚡ <span id="lbl-hourly-val">$0.00</span>/hr (<span id="lbl-hrs-val">0.0</span>h)</span>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <button type="button" class="btn-cancel-edit" id="btn-cancel-edit" style="display:none;">✕ Cancel Edit</button>
+                  <button type="button" class="btn-add" id="btn-add" disabled>Add to Manifest</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Today's Runs -->
+          <div class="sec-head" id="sec-today-head">Today's Runs <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);margin-left:auto;" id="lbl-today-n">0 logged</span></div>
+          <div id="c-today"></div>
+        </div>
+
+      <!-- TAB 2: HISTORY -->
+      <div class="tab-view" id="view-history">
+        <div class="filter-bar">
+          <div class="fg">
+            <button class="fbtn active" data-filter="all">All</button>
+            <button class="fbtn" data-filter="unpaid">Unpaid</button>
+            <button class="fbtn" data-filter="paid">Paid</button>
+          </div>
+          <input type="text" class="search-in" id="i-search" placeholder="Search driver, date…">
+        </div>
+        <div id="c-history"></div>
+      </div>
+
+      <!-- TAB 3: PAY & CLAIMS -->
+      <div class="tab-view" id="view-claims">
+        <div class="claims-grid">
+          <div class="claim-box"><div class="title">Outstanding Unpaid</div><div class="amount unpaid" id="cl-unpaid">$0.00</div></div>
+          <div class="claim-box"><div class="title">Total Paid to Date</div><div class="amount paid" id="cl-paid">$0.00</div></div>
+          <div class="claim-box"><div class="title">Average Hourly Pay</div><div class="amount" style="color:var(--stamp-green);" id="cl-avgrate">$0.00/hr</div></div>
+          <div class="claim-box"><div class="title">Total Shift Hours</div><div class="amount" id="cl-hours">0.0h</div></div>
+          <div class="claim-box"><div class="title">Lifetime Deliveries</div><div class="amount" id="cl-parcels">0</div></div>
+          <div class="claim-box"><div class="title">Lifetime Earnings</div><div class="amount" id="cl-lifetime">$0.00</div></div>
+        </div>
+        <div class="claim-actions">
+          <div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:3px;">Payday Batch Action</div>
+            <div style="font-size:11px;color:var(--ink-dim);">Mark all outstanding as paid when depot pays.</div>
+          </div>
+          <button class="btn-pay-all" id="btn-pay-all">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Mark All Paid
+          </button>
+        </div>
+
+        <!-- FULL-WIDTH WORK & PAY CALENDAR -->
+        <div class="cal-card" id="claims-calendar-card">
+          <div class="cal-header">
+            <div class="cal-nav">
+              <button type="button" class="cal-btn" id="cal-prev" title="Previous Month">◀</button>
+              <div class="cal-month-title" id="cal-month-label">September 2026</div>
+              <button type="button" class="cal-btn" id="cal-next" title="Next Month">▶</button>
+              <button type="button" class="cal-btn" id="cal-today-btn" style="margin-left:4px;">Current Month</button>
+            </div>
+            <div class="cal-legend">
+              <span><i class="cal-dot green"></i>Paid</span>
+              <span><i class="cal-dot red"></i>Unpaid</span>
+              <span><i class="cal-dot today"></i>Today</span>
+            </div>
+          </div>
+          <div class="cal-summary-strip" id="cal-summary-strip">
+            <span id="cal-month-days-count">0 days worked</span>
+            <span id="cal-month-earned-stat">$0.00 earned ($0.00 paid / $0.00 unpaid)</span>
+          </div>
+          <div class="cal-grid-head">
+            <div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div><div>SUN</div>
+          </div>
+          <div class="cal-grid" id="cal-days-grid"></div>
+          <div id="cal-day-details" class="cal-day-detail-panel" style="display:none;"></div>
+        </div>
+
+        <div class="form-card" style="margin-bottom:18px;">
+          <div class="form-heading">Monthly Breakdown</div>
+          <div id="c-months"></div>
+        </div>
+
+        <!-- Transfers by Driver (Collapsible, collapsed by default) -->
+        <div class="form-card">
+          <div class="form-heading clickable-toggle" id="toggle-drivers" style="cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between;margin-bottom:0;" title="Click to expand / collapse driver transfers">
+            <div style="display:flex;align-items:center;gap:7px;">
+              <span class="toggle-arrow collapsed" id="drivers-toggle-arrow">▶</span>
+              <span>Transfers by Driver</span>
+            </div>
+            <span id="drivers-count-badge" class="shift-summary-pill">0 drivers</span>
+          </div>
+          <div id="c-drivers-wrap" style="display:none;margin-top:14px;">
+            <div id="c-drivers"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════ BOTTOM TAB BAR ═══════════ -->
+  <nav class="bottom-tabs">
+    <button class="btab active" data-tab="view-entry">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      New Entry
+    </button>
+    <button class="btab" data-tab="view-history">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      History
+    </button>
+    <button class="btab" data-tab="view-claims">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+      Pay & Claims
+    </button>
+  </nav>
+
+  <!-- ═══════════ SETTINGS MODAL (hidden) ═══════════ -->
+  <div class="overlay" id="modal-overlay" style="display:none">
+    <div class="modal">
+      <h3>Rates & Settings</h3>
+      <div class="modal-row">
+        <div class="modal-field"><label>Standard Rate ($/parcel)</label><input type="number" step="0.01" min="0" id="cfg-n" value="1.60"></div>
+        <div class="modal-field"><label>Express Rate ($/parcel)</label><input type="number" step="0.01" min="0" id="cfg-e" value="3.60"></div>
+      </div>
+      <div class="modal-row" style="grid-template-columns:1fr">
+        <div class="modal-field"><label>Saturday Hourly Rate ($/hour)</label><input type="number" step="0.01" min="0" id="cfg-sat" value="48.14"></div>
+      </div>
+      <div class="modal-btns">
+        <button class="cancel" id="btn-modal-cancel">Cancel</button>
+        <button class="save" id="btn-modal-save">Save Rates</button>
+      </div>
+      <div class="danger-section">
+        <button class="btn-danger" id="btn-clear-db">Clear All Manifest Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ AUTH MODAL (Login Only) ═══════════ -->
+  <div class="overlay" id="auth-modal-overlay" style="display:none">
+    <div class="modal auth-modal">
+      <div id="auth-error-msg" class="auth-error" style="display:none"></div>
+      <form id="form-auth">
+        <div class="modal-field" style="margin-bottom:12px;">
+          <label>Username</label>
+          <input type="text" id="auth-username" required autocomplete="username" placeholder="e.g. driver_john">
+        </div>
+        <div class="modal-field" style="margin-bottom:16px;">
+          <label>Password</label>
+          <input type="password" id="auth-password" required autocomplete="current-password" placeholder="At least 6 characters">
+        </div>
+        <div class="modal-btns">
+          <button type="button" class="cancel" id="btn-auth-cancel">Cancel</button>
+          <button type="submit" class="save" id="btn-auth-submit">Sign In</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast-el" style="display:none"></div>
+
+  <script>
+  (function(){
+    'use strict';
+    var EK='parcel_entries_v1', SK='parcel_settings_v1';
+    var DR={normal:1.60,express:3.60,saturdayHourly:48.14};
+
+    var S={
+      entries:[],rates:Object.assign({},DR),theme:'light',
+      filter:'all',search:'',
+      isSat:false,
+      editingId:null,
+      form:{date:td(),normal:0,express:0,transferType:'None',transferQty:0,transferredFrom:'',
+            deliveryLogin:'',
+            startTime:'08:00',endTime:'17:30',hoursWorked:9.0,breakDeducted:true,satParcels:0,paid:false,createdAt:null}
+    };
+    var shiftBoxCollapsed=false;
+    var xferBoxCollapsed=true;
+    var editOriginTab=null;
+    var toastT=null;
+
+    function td(){var d=new Date(),o=d.getTimezoneOffset();return new Date(d.getTime()-o*6e4).toISOString().slice(0,10);}
+    function yd(){var d=new Date();d.setDate(d.getDate()-1);var o=d.getTimezoneOffset();return new Date(d.getTime()-o*6e4).toISOString().slice(0,10);}
+    function fmtD(s){if(!s)return'';var p=s.split('-').map(Number);return new Date(p[0],p[1]-1,p[2]).toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short',year:'numeric'});}
+    function fmtTime(t){
+      if(!t)return'';
+      var p=t.split(':').map(Number);
+      var h=p[0], m=p[1];
+      var ampm=h>=12?'PM':'AM';
+      h=h%12||12;
+      return h+':'+(m<10?'0':'')+m+' '+ampm;
+    }
+    function $(n){return money(n);}
+    function money(n){return'$'+(Math.round((n||0)*100)/100).toFixed(2);}
+    function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
+    function cPay(e,r){
+      if(e.isSaturday)return(e.hoursWorked||0)*(r.saturdayHourly||48.14);
+      var p=(e.normal||0)*r.normal+(e.express||0)*r.express;
+      if(e.transferType==='Normal')p+=(e.transferQty||0)*r.normal;
+      if(e.transferType==='Express')p+=(e.transferQty||0)*r.express;
+      return p;
+    }
+    function isSaturday(dateStr){
+      if(!dateStr)return false;
+      var p=dateStr.split('-').map(Number);
+      return new Date(p[0],p[1]-1,p[2]).getDay()===6;
+    }
+    function calcHours(start,end){
+      if(!start||!end)return 0;
+      var sp=start.split(':').map(Number),ep=end.split(':').map(Number);
+      var mins=(ep[0]*60+ep[1])-(sp[0]*60+sp[1]);
+      if(mins<0)mins+=24*60;
+      return Math.round(mins/60*100)/100;
+    }
+
+    function toast(m){var t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(toastT);toastT=setTimeout(function(){t.style.display='none';},3500);}
+
+    var currentUser = null;
+    var isWebServer = false;
+
+    function updateUserUI(user){
+      currentUser = user;
+      var profile = document.getElementById('user-profile');
+      var avatar = document.getElementById('user-avatar');
+      var nameDisplay = document.getElementById('user-name-display');
+      var openBtn = document.getElementById('btn-auth-open');
+      if(user){
+        if(profile) profile.style.display = 'flex';
+        if(nameDisplay) nameDisplay.textContent = user.username || 'Driver';
+        if(avatar) avatar.textContent = (user.username || 'D').charAt(0).toUpperCase();
+        if(openBtn) openBtn.style.display = 'none';
+      } else if(isWebServer){
+        if(profile) profile.style.display = 'none';
+        if(openBtn) openBtn.style.display = 'inline-flex';
+      }
+    }
+
+    var B={
+      async load(){
+        if(window.pywebview&&window.pywebview.api){
+          try{
+            var e=await window.pywebview.api.get_entries(),s=await window.pywebview.api.get_settings();
+            return{entries:e||[],settings:s||{}};
+          }catch(err){console.error(err);}
+        }
+        try{
+          var meRes = await fetch('/api/auth/me');
+          if(meRes.ok){
+            isWebServer = true;
+            var meData = await meRes.json();
+            if(meData.authenticated && meData.user){
+              updateUserUI(meData.user);
+              var entRes = await fetch('/api/entries');
+              if(entRes.ok){
+                var entData = await entRes.json();
+                return {entries: entData.entries||[], settings: entData.settings||{}};
+              }
+            } else {
+              updateUserUI(null);
+              showAuthModal();
+              return {entries: [], settings: {}};
+            }
+          }
+        }catch(err){
+          // Standalone browser / offline static mode
+        }
+        var e=localStorage.getItem(EK),s=localStorage.getItem(SK);
+        return{entries:e?JSON.parse(e):[],settings:s?JSON.parse(s):{}};
+      },
+      async save(entry){
+        if(window.pywebview&&window.pywebview.api)return await window.pywebview.api.add_entry(entry);
+        if(isWebServer){
+          var res = await fetch('/api/entries', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(entry)});
+          if(res.ok){ var d=await res.json(); return d.entries||[]; }
+        }
+        var n=S.entries.concat([entry]);localStorage.setItem(EK,JSON.stringify(n));return n;
+      },
+      async toggle(id){
+        if(window.pywebview&&window.pywebview.api)return await window.pywebview.api.toggle_paid(id);
+        if(isWebServer){
+          var res = await fetch('/api/entries/' + encodeURIComponent(id) + '/toggle-paid', {method:'POST'});
+          if(res.ok){ var d=await res.json(); return d.entries||[]; }
+        }
+        var n=S.entries.map(function(e){return e.id===id?Object.assign({},e,{paid:!e.paid}):e;});localStorage.setItem(EK,JSON.stringify(n));return n;
+      },
+      async markAll(){
+        if(window.pywebview&&window.pywebview.api)return await window.pywebview.api.mark_all_paid();
+        if(isWebServer){
+          var res = await fetch('/api/entries/mark-all-paid', {method:'POST'});
+          if(res.ok){ var d=await res.json(); return d.entries||[]; }
+        }
+        var n=S.entries.map(function(e){return Object.assign({},e,{paid:true});});localStorage.setItem(EK,JSON.stringify(n));return n;
+      },
+      async del(id){
+        if(window.pywebview&&window.pywebview.api)return await window.pywebview.api.delete_entry(id);
+        if(isWebServer){
+          var res = await fetch('/api/entries/' + encodeURIComponent(id), {method:'DELETE'});
+          if(res.ok){ var d=await res.json(); return d.entries||[]; }
+        }
+        var n=S.entries.filter(function(e){return e.id!==id;});localStorage.setItem(EK,JSON.stringify(n));return n;
+      },
+      async clear(){
+        if(window.pywebview&&window.pywebview.api)return await window.pywebview.api.clear_all_entries();
+        if(isWebServer){
+          var res = await fetch('/api/entries/clear-all', {method:'DELETE'});
+          if(res.ok) return [];
+        }
+        localStorage.setItem(EK,'[]');return[];
+      },
+      async saveCfg(r,t){
+        if(window.pywebview&&window.pywebview.api){await window.pywebview.api.save_rates(r);await window.pywebview.api.save_theme(t);return;}
+        if(isWebServer){
+          await fetch('/api/settings', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({rates:r, theme:t})});
+          return;
+        }
+        localStorage.setItem(SK,JSON.stringify({rates:r,theme:t}));
+      },
+      async excel(){
+        if(window.pywebview&&window.pywebview.api)return await window.pywebview.api.export_excel();
+        if(isWebServer){
+          window.location.href = '/api/export/excel';
+          return {success:true, count:S.entries.length};
+        }
+        var csv='Date,Normal,Express,Transfer Type,Transfer Qty,Transferred From,Pay\n';
+        S.entries.forEach(function(e){var p=cPay(e,S.rates);csv+=[e.date,e.normal,e.express,e.transferType,e.transferQty,'"'+(e.transferredFrom||'')+'"',p.toFixed(2)].join(',')+'\n';});
+        var blob=new Blob([csv],{type:'text/csv'});var u=URL.createObjectURL(blob);var a=document.createElement('a');a.href=u;a.download='manifest_all_'+td()+'.csv';a.click();
+        return{success:true,filename:'manifest_all.csv'};
+      },
+      async invoice(){
+        if(window.pywebview&&window.pywebview.api)return await window.pywebview.api.export_invoice();
+        if(isWebServer){
+          window.location.href = '/api/export/invoice';
+          return {success:true, count:S.entries.filter(function(x){return!x.paid;}).length};
+        }
+        var csv='Date,Normal,Express,Transfer Type,Transfer Qty,Transferred From,Pay\n';
+        S.entries.filter(function(e){return!e.paid;}).forEach(function(e){var p=cPay(e,S.rates);csv+=[e.date,e.normal,e.express,e.transferType,e.transferQty,'"'+(e.transferredFrom||'')+'"',p.toFixed(2)].join(',')+'\n';});
+        var blob=new Blob([csv],{type:'text/csv'});var u=URL.createObjectURL(blob);var a=document.createElement('a');a.href=u;a.download='invoice_unpaid_'+td()+'.csv';a.click();
+        return{success:true,filename:'invoice_unpaid.csv'};
+      }
+    };
+
+    function withRunning(entries,rates){
+      return entries.map(function(e){
+        var p=cPay(e,rates);
+        var c=Object.assign({},e);
+        c.pay=p;
+        c.periodTotal=e.paid ? p : null;
+        return c;
+      });
+    }
+    function outstanding(wr){
+      var s=0;
+      for(var i=0;i<wr.length;i++){
+        if(!wr[i].paid) s+=wr[i].pay;
+      }
+      return s;
+    }
+
+    function checkSaturdayMode(){
+      S.isSat=isSaturday(S.form.date);
+      var satBanner = document.getElementById('sat-banner');
+      var shiftTitleText = document.getElementById('shift-title-text');
+
+      if(S.isSat){
+        satBanner.style.display = 'flex';
+        satBanner.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>SATURDAY SHIFT \u2014 Hourly Rate Mode ('+$(S.rates.saturdayHourly||48.14)+'/hr)</span>';
+        if(shiftTitleText) shiftTitleText.innerHTML = '⚡ Saturday Shift';
+
+        if(!S.editingId && (!S.form.startTime || S.form.startTime === '08:00' || S.form.startTime === '07:30')){
+          S.form.startTime = '07:00';
+          S.form.endTime = '12:00';
+        }
+        document.getElementById('i-shift-start').value = S.form.startTime || '07:00';
+        document.getElementById('i-shift-end').value = S.form.endTime || '12:00';
+        updateShiftHours();
+      } else {
+        satBanner.style.display = 'none';
+        if(shiftTitleText) shiftTitleText.innerHTML = '⏱️ Shift Times';
+
+        if(!S.editingId && (!S.form.startTime || S.form.startTime === '07:00' || S.form.startTime === '07:30')){
+          S.form.startTime = '08:00';
+          S.form.endTime = '17:30';
+        }
+        document.getElementById('i-shift-start').value = S.form.startTime || '08:00';
+        document.getElementById('i-shift-end').value = S.form.endTime || '17:30';
+        updateShiftHours();
+      }
+
+      // Update diff login UI state
+      var chkDiffLogin = document.getElementById('chk-diff-login');
+      var boxDiffLogin = document.getElementById('box-diff-login');
+      var inDiffLogin = document.getElementById('i-diff-login');
+      if(chkDiffLogin && boxDiffLogin && inDiffLogin){
+        var hasLogin = Boolean(S.form.deliveryLogin && S.form.deliveryLogin.trim());
+        chkDiffLogin.checked = hasLogin;
+        boxDiffLogin.style.display = hasLogin ? 'block' : 'none';
+        inDiffLogin.value = S.form.deliveryLogin || '';
+      }
+
+      var addBtn=document.getElementById('btn-add');
+      addBtn.textContent=S.editingId?'Update Entry':'Add to Manifest';
+      document.getElementById('btn-cancel-edit').style.display=S.editingId?'block':'none';
+      updateLive();
+    }
+
+    function updateShiftHours(){
+      var s = document.getElementById('i-shift-start').value;
+      var e = document.getElementById('i-shift-end').value;
+      var chkBreak = document.getElementById('chk-shift-break').checked;
+      S.form.startTime = s || '';
+      S.form.endTime = e || '';
+      var pill = document.getElementById('shift-summary-pill');
+      var rightStat = document.getElementById('lbl-shift-right-stat');
+      var note = document.getElementById('lbl-shift-break-note');
+
+      if(s && e){
+        var raw = calcHours(s, e);
+        var brk = chkBreak && raw >= 5;
+        var net = brk ? Math.max(0, raw - 0.5) : raw;
+        S.form.hoursWorked = Math.round(net * 100) / 100;
+        S.form.breakDeducted = brk;
+        if(rightStat) rightStat.textContent = net.toFixed(1) + ' hrs';
+        if(note) note.textContent = brk ? '(30min break deducted)' : '';
+        if(pill){
+          pill.textContent = fmtTime(s) + ' \u2013 ' + fmtTime(e) + ' (' + net.toFixed(1) + 'h)';
+        }
+      } else {
+        S.form.hoursWorked = 0;
+        S.form.breakDeducted = false;
+        if(rightStat) rightStat.textContent = '0.0 hrs';
+        if(note) note.textContent = '';
+        if(pill) pill.textContent = 'No hours set';
+      }
+    }
+
+    function updateLive(){
+      var f=S.form;
+      var ratePill = document.getElementById('lbl-rate-display');
+      var rateVal = document.getElementById('lbl-hourly-val');
+      var hrsVal = document.getElementById('lbl-hrs-val');
+
+      if(S.isSat){
+        var pr=f.hoursWorked*(S.rates.saturdayHourly||48.14);
+        document.getElementById('lbl-pay').textContent=$(pr);
+        if(f.hoursWorked > 0){
+          ratePill.style.display = 'inline-flex';
+          rateVal.textContent = $(S.rates.saturdayHourly || 48.14).replace('$', '');
+          hrsVal.textContent = f.hoursWorked.toFixed(1);
+        } else {
+          ratePill.style.display = 'none';
+        }
+        document.getElementById('btn-add').disabled=!(f.hoursWorked>0);
+      }else{
+        var pr=cPay(f,S.rates);
+        document.getElementById('lbl-pay').textContent=$(pr);
+        if(f.hoursWorked > 0 && pr > 0){
+          var perHr = pr / f.hoursWorked;
+          ratePill.style.display = 'inline-flex';
+          rateVal.textContent = $(perHr).replace('$', '');
+          hrsVal.textContent = f.hoursWorked.toFixed(1);
+        } else {
+          ratePill.style.display = 'none';
+        }
+        document.getElementById('btn-add').disabled=!(f.normal>0||f.express>0||f.transferQty>0);
+      }
+      var has=f.transferType!=='None';
+      document.getElementById('wrap-xfer').style.opacity=has?'1':'.4';
+      document.getElementById('i-t').disabled=!has;
+      document.getElementById('b-dt').disabled=!has;
+      document.getElementById('b-ut').disabled=!has;
+      document.getElementById('box-driver').style.display=has?'block':'none';
+      var lblXferStatus = document.getElementById('lbl-xfer-status');
+      if(lblXferStatus){
+        lblXferStatus.textContent = has ? (f.transferQty + ' ' + f.transferType) : 'No transfer';
+      }
+    }
+
+    function updateLoginsDatalist(){
+      var dl=document.getElementById('recent-logins-list');
+      if(!dl)return;
+      var set={};
+      S.entries.forEach(function(e){
+        if(e.deliveryLogin&&e.deliveryLogin.trim()){
+          set[e.deliveryLogin.trim()]=true;
+        }
+      });
+      var keys=Object.keys(set);
+      var opts='';
+      keys.forEach(function(k){opts+='<option value="'+esc(k)+'">';});
+      dl.innerHTML=opts;
+    }
+
+    function refresh(){
+      var wr=withRunning(S.entries,S.rates),ow=outstanding(wr),today=td();
+      var elHdrOwed = document.getElementById('hdr-owed');
+      if(elHdrOwed) elHdrOwed.textContent = $(ow);
+      var elSOwed = document.getElementById('s-owed');
+      if(elSOwed) elSOwed.textContent = $(ow);
+
+      var te=wr.filter(function(e){return e.date===today;});
+      var tp=te.reduce(function(s,e){return s+(e.normal||0)+(e.express||0)+(e.transferQty||0);},0);
+      var tpay=te.reduce(function(s,e){return s+e.pay;},0);
+
+      var elTodayParcels = document.getElementById('s-today-parcels');
+      if(elTodayParcels) elTodayParcels.textContent = tp;
+      var elTodayPay = document.getElementById('s-today-pay');
+      if(elTodayPay) elTodayPay.textContent = $(tpay)+' earned today';
+      var elRatesSub = document.getElementById('s-rates-sub');
+      if(elRatesSub) elRatesSub.textContent = $(S.rates.normal)+' / '+$(S.rates.express)+' per parcel';
+      var elRtN = document.getElementById('rt-n');
+      if(elRtN) elRtN.textContent = '@ '+$(S.rates.normal);
+      var elRtE = document.getElementById('rt-e');
+      if(elRtE) elRtE.textContent = '@ '+$(S.rates.express);
+      var elTodayN = document.getElementById('lbl-today-n');
+      if(elTodayN) elTodayN.textContent = te.length+' logged';
+
+      updateLoginsDatalist();
+
+      // Today list
+      var tc=document.getElementById('c-today');
+      if(!te.length){tc.innerHTML='<div class="empty"><div class="icon">📦</div>No runs logged today yet.</div>';}
+      else{var h='';te.slice().reverse().forEach(function(e){h+=cardHTML(e);});tc.innerHTML=h;}
+      wireCards(tc);
+
+      // History list
+      renderHistory(wr);
+      // Claims & Calendar
+      renderClaims(wr);
+    }
+
+    function cardHTML(e){
+      var h='<div class="ecard'+(e.paid?' is-paid':'')+'">';
+      if(e.paid)h+='<div class="stamp-paid">PAID</div>';
+      h+='<div class="hole"></div><div class="ecard-main">';
+      h+='<div class="ecard-date">'+esc(fmtD(e.date))+'</div><div class="chips">';
+      
+      var hrs = floatVal(e.hoursWorked);
+      if(e.isSaturday){
+        h+='<span class="chip sat">SAT SHIFT '+hrs.toFixed(1)+'h</span>';
+        if(e.startTime&&e.endTime)h+='<span class="chip">'+esc(e.startTime)+' \u2013 '+esc(e.endTime)+'</span>';
+        if(hrs > 0) h+='<span class="chip rate">⚡ '+$(S.rates.saturdayHourly||48.14)+'/hr</span>';
+        if(e.breakDeducted)h+='<span class="chip" style="color:#FBBF24">\u23F8 break</span>';
+        var tp=(e.normal||0)+(e.express||0);if(tp>0)h+='<span class="chip">'+tp+' parcels</span>';
+      }else{
+        if(e.normal>0)h+='<span class="chip">'+e.normal+' std</span>';
+        if(e.express>0)h+='<span class="chip exp">'+e.express+' exp</span>';
+        if(e.transferQty>0){var l='+'+e.transferQty+' '+(e.transferType||'').toLowerCase()+' xfer';if(e.transferredFrom)l+=' <span class="driver-tag">('+esc(e.transferredFrom)+')</span>';h+='<span class="chip xfr">'+l+'</span>';}
+        if(hrs > 0){
+          var tStr = (e.startTime && e.endTime) ? (esc(e.startTime) + ' \u2013 ' + esc(e.endTime) + ' (' + hrs.toFixed(1) + 'h)') : (hrs.toFixed(1) + 'h shift');
+          h+='<span class="chip">⏱️ '+tStr+'</span>';
+          var rate = e.pay / hrs;
+          h+='<span class="chip rate">⚡ '+$(rate)+'/hr</span>';
+        }
+      }
+      if(e.deliveryLogin){
+        h+='<span class="chip" style="border-color:#38BDF8;color:#38BDF8;background:rgba(56,189,248,.12);font-weight:600;">👤 ' + esc(e.deliveryLogin) + '</span>';
+      }
+      h+='</div>';
+      if(e.paid&&e.periodTotal!==null)h+='<div class="ecard-period">Period: '+$(e.periodTotal)+'</div>';
+      h+='</div><div class="ecard-right">';
+      h+='<div class="ecard-pay">'+$(e.pay)+'</div>';
+      h+='<button class="btn-paid" data-act="toggle" data-id="'+e.id+'">'+(e.paid?'Unmark':'Mark Paid')+'</button>';
+      h+='<button class="btn-card-edit" data-act="edit" data-id="'+e.id+'">edit</button>';
+      h+='<button class="btn-del" data-act="del" data-id="'+e.id+'">delete</button>';
+      h+='</div></div>';
+      return h;
+    }
+
+    function floatVal(v){var n=parseFloat(v);return isNaN(n)?0:n;}
+
+    function startEntryEdit(id){
+      var e=S.entries.find(function(x){return String(x.id)===String(id);});
+      if(!e)return;
+
+      var curActiveTab=document.querySelector('.btab.active');
+      if(curActiveTab&&curActiveTab.dataset.tab!=='view-entry'){
+        editOriginTab=curActiveTab.dataset.tab;
+      }else{
+        editOriginTab=null;
+      }
+
+      S.editingId=e.id;
+      S.form={
+        date:e.date,normal:e.normal||0,express:e.express||0,
+        transferType:e.transferType||'None',transferQty:e.transferQty||0,transferredFrom:e.transferredFrom||'',
+        deliveryLogin:e.deliveryLogin||'',
+        startTime:e.startTime||'',endTime:e.endTime||'',hoursWorked:floatVal(e.hoursWorked),breakDeducted:Boolean(e.breakDeducted),
+        paid:e.paid,createdAt:e.createdAt
+      };
+
+      document.getElementById('f-date').value=e.date;
+      document.getElementById('i-n').value=S.form.normal;
+      document.getElementById('i-e').value=S.form.express;
+      document.getElementById('sel-tt').value=S.form.transferType;
+      document.getElementById('i-t').value=S.form.transferQty;
+      document.getElementById('i-driver').value=S.form.transferredFrom;
+
+      var chkLogin=document.getElementById('chk-diff-login');
+      var boxLogin=document.getElementById('box-diff-login');
+      var inLogin=document.getElementById('i-diff-login');
+      if(chkLogin&&boxLogin&&inLogin){
+        if(e.deliveryLogin){
+          chkLogin.checked=true;
+          boxLogin.style.display='block';
+          inLogin.value=e.deliveryLogin;
+        } else {
+          chkLogin.checked=false;
+          boxLogin.style.display='none';
+          inLogin.value='';
+        }
+      }
+
+      document.getElementById('i-shift-start').value=S.form.startTime||(e.isSaturday?'07:00':'08:00');
+      document.getElementById('i-shift-end').value=S.form.endTime||(e.isSaturday?'12:00':'17:30');
+      document.getElementById('chk-shift-break').checked=Boolean(S.form.breakDeducted);
+
+      // Collapsible Driver Transfers: expand if has transfers, collapse otherwise
+      var hasXfer=(S.form.transferType&&S.form.transferType!=='None');
+      var xferContent=document.getElementById('xfer-box-content');
+      var xferArrow=document.getElementById('xfer-toggle-arrow');
+      xferBoxCollapsed=!hasXfer;
+      if(xferContent){
+        xferContent.style.display=hasXfer?'block':'none';
+      }
+      if(xferArrow){
+        if(hasXfer){
+          xferArrow.classList.remove('collapsed');
+          xferArrow.textContent='▼';
+        }else{
+          xferArrow.classList.add('collapsed');
+          xferArrow.textContent='▶';
+        }
+      }
+
+      // Collapsible Shift Times: expand when editing so times are visible
+      var shiftContent=document.getElementById('shift-box-content');
+      var shiftArrow=document.getElementById('shift-toggle-arrow');
+      shiftBoxCollapsed=false;
+      if(shiftContent) shiftContent.style.display='block';
+      if(shiftArrow){
+        shiftArrow.classList.remove('collapsed');
+        shiftArrow.textContent='▼';
+      }
+
+      // Switch to New Entry tab
+      var entryTabBtn=document.querySelector('.btab[data-tab="view-entry"]');
+      if(entryTabBtn) entryTabBtn.click();
+
+      // Scroll to top of app so user sees form immediately
+      var appBody=document.querySelector('.app-body');
+      if(appBody) appBody.scrollTop=0;
+
+      checkSaturdayMode();
+      toast('Editing entry for '+fmtD(e.date));
+    }
+
+    function wireCards(el){
+      el.querySelectorAll('[data-act="toggle"]').forEach(function(b){b.onclick=async function(){S.entries=await B.toggle(b.dataset.id);refresh();};});
+      el.querySelectorAll('[data-act="del"]').forEach(function(b){b.onclick=async function(){if(!confirm('Delete this entry?'))return;S.entries=await B.del(b.dataset.id);refresh();toast('Entry removed');};});
+      el.querySelectorAll('[data-act="edit"]').forEach(function(b){
+        b.onclick=function(){
+          startEntryEdit(b.dataset.id);
+        };
+      });
+    }
+
+    function renderHistory(wr){
+      var c=document.getElementById('c-history'),list=wr.slice().reverse();
+      if(S.filter==='unpaid')list=list.filter(function(e){return!e.paid;});
+      else if(S.filter==='paid')list=list.filter(function(e){return e.paid;});
+      if(S.search){var q=S.search.toLowerCase();list=list.filter(function(e){return(e.date&&e.date.includes(q))||(e.transferredFrom&&e.transferredFrom.toLowerCase().includes(q))||(e.deliveryLogin&&e.deliveryLogin.toLowerCase().includes(q));});}
+      if(!list.length){c.innerHTML='<div class="empty"><div class="icon">🔍</div>No entries match your filter.</div>';return;}
+      var h='';list.forEach(function(e){h+=cardHTML(e);});c.innerHTML=h;wireCards(c);
+    }
+
+    // ═══════════ CALENDAR LOGIC ═══════════
+    var calState = {
+      year: new Date().getFullYear(),
+      month: new Date().getMonth()
+    };
+
+    function renderCalendar(wr){
+      var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+      document.getElementById('cal-month-label').textContent = monthNames[calState.month] + ' ' + calState.year;
+
+      var byDate = {};
+      wr.forEach(function(e){
+        if(!e.date) return;
+        if(!byDate[e.date]) byDate[e.date] = [];
+        byDate[e.date].push(e);
+      });
+
+      var mStr = (calState.month + 1 < 10 ? '0' : '') + (calState.month + 1);
+      var monthPrefix = calState.year + '-' + mStr;
+
+      var daysWorked = 0, mEarned = 0, mPaid = 0, mUnpaid = 0;
+      Object.keys(byDate).forEach(function(d){
+        if(d.startsWith(monthPrefix)){
+          daysWorked++;
+          byDate[d].forEach(function(e){
+            mEarned += e.pay;
+            if(e.paid) mPaid += e.pay; else mUnpaid += e.pay;
+          });
+        }
+      });
+
+      document.getElementById('cal-month-days-count').textContent = daysWorked + (daysWorked === 1 ? ' day worked' : ' days worked');
+      document.getElementById('cal-month-earned-stat').textContent = money(mEarned) + ' earned (' + money(mPaid) + ' paid / ' + money(mUnpaid) + ' unpaid)';
+
+      var firstDay = new Date(calState.year, calState.month, 1);
+      var daysInMonth = new Date(calState.year, calState.month + 1, 0).getDate();
+      var daysInPrevMonth = new Date(calState.year, calState.month, 0).getDate();
+      var startCol = (firstDay.getDay() + 6) % 7; // Monday=0, Sunday=6
+      var todayStr = td();
+
+      var gridEl = document.getElementById('cal-days-grid');
+      var html = '';
+
+      for(var i = 0; i < startCol; i++){
+        var pDay = daysInPrevMonth - startCol + 1 + i;
+        html += '<div class="cal-day empty"><div class="cal-day-top"><span class="cal-day-num">' + pDay + '</span></div></div>';
+      }
+
+      for(var day = 1; day <= daysInMonth; day++){
+        var dDay = (day < 10 ? '0' : '') + day;
+        var dateStr = monthPrefix + '-' + dDay;
+        var isToday = (dateStr === todayStr);
+        var entries = byDate[dateStr] || [];
+        var worked = entries.length > 0;
+        var allPaid = worked && entries.every(function(x){ return x.paid; });
+
+        var cls = 'cal-day' + (isToday ? ' today' : '') + (worked ? ' worked' : '') + (allPaid ? ' paid' : '');
+        html += '<div class="' + cls + '" data-cal-date="' + dateStr + '">';
+        html += '<div class="cal-day-top">';
+        html += '<span class="cal-day-num">' + day + '</span>';
+
+        if(worked){
+          if(allPaid){
+            html += '<span class="cal-indicator-circle green" title="Paid"></span>';
+          } else {
+            html += '<span class="cal-indicator-circle red" title="Unpaid"></span>';
+          }
+        }
+        html += '</div>';
+
+        if(worked){
+          var totParcels = entries.reduce(function(s, x){ return s + (x.normal||0) + (x.express||0) + (x.transferQty||0); }, 0);
+          var totPay = entries.reduce(function(s, x){ return s + x.pay; }, 0);
+          html += '<div class="cal-day-info">';
+          html += '<div class="cal-day-parcels">' + totParcels + ' pk</div>';
+          html += '<div class="cal-day-pay ' + (allPaid ? 'green' : 'red') + '">' + money(totPay) + '</div>';
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+
+      var totalCells = startCol + daysInMonth;
+      var trailing = (7 - (totalCells % 7)) % 7;
+      for(var t = 1; t <= trailing; t++){
+        html += '<div class="cal-day empty"><div class="cal-day-top"><span class="cal-day-num">' + t + '</span></div></div>';
+      }
+
+      gridEl.innerHTML = html;
+
+      gridEl.querySelectorAll('.cal-day.worked').forEach(function(card){
+        card.onclick = function(){
+          var d = card.dataset.calDate;
+          showCalDayDetails(d, byDate[d] || []);
+        };
+      });
+    }
+
+    function showCalDayDetails(dateStr, entries){
+      var panel = document.getElementById('cal-day-details');
+      if(!entries || !entries.length){
+        panel.style.display = 'none';
+        return;
+      }
+      var totPay = entries.reduce(function(s, x){ return s + x.pay; }, 0);
+      var totPk = entries.reduce(function(s, x){ return s + (x.normal||0) + (x.express||0) + (x.transferQty||0); }, 0);
+
+      var h = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">';
+      h += '<div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--ink);text-transform:uppercase;">';
+      h += '📅 ' + esc(fmtD(dateStr)) + ' &bull; ' + totPk + ' parcels &bull; ' + money(totPay);
+      h += '</div>';
+      h += '<button type="button" class="cal-btn" id="btn-close-cal-detail">✕ Close</button>';
+      h += '</div>';
+
+      h += '<div style="display:flex;flex-direction:column;gap:6px;">';
+      entries.forEach(function(e){
+        h += '<div style="background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;font-size:12px;">';
+        h += '<div>';
+        if(e.isSaturday){
+          h += '<b>Saturday Shift</b> (' + (e.hoursWorked||0).toFixed(1) + 'h) @ ' + money(S.rates.saturdayHourly||48.14) + '/hr';
+        } else {
+          h += '<b>' + (e.normal||0) + ' Std</b>, <b>' + (e.express||0) + ' Exp</b>';
+          if(e.transferQty>0) h += ' + ' + e.transferQty + ' ' + (e.transferType||'').toLowerCase() + ' (' + esc(e.transferredFrom||'') + ')';
+          if(e.hoursWorked>0) h += ' &bull; ' + (e.hoursWorked||0).toFixed(1) + 'h shift';
+        }
+        if(e.deliveryLogin) h += ' <span style="color:#38BDF8;font-size:11px;font-weight:600;">[Login: ' + esc(e.deliveryLogin) + ']</span>';
+        h += '</div>';
+        h += '<div style="display:flex;align-items:center;gap:8px;">';
+        h += '<span style="font-family:var(--font-mono);font-weight:700;' + (e.paid ? 'color:var(--stamp-green);' : 'color:var(--stamp-orange);') + '">' + money(e.pay) + '</span>';
+        h += '<button class="btn-card-edit" data-act="cal-edit" data-id="' + e.id + '">edit</button>';
+        h += '<button class="btn-paid" data-act="cal-toggle" data-id="' + e.id + '">' + (e.paid ? 'Unmark' : 'Mark Paid') + '</button>';
+        h += '</div>';
+        h += '</div>';
+      });
+      h += '</div>';
+
+      panel.innerHTML = h;
+      panel.style.display = 'block';
+
+      document.getElementById('btn-close-cal-detail').onclick = function(){
+        panel.style.display = 'none';
+      };
+
+      panel.querySelectorAll('[data-act="cal-edit"]').forEach(function(b){
+        b.onclick = function(){
+          panel.style.display = 'none';
+          startEntryEdit(b.dataset.id);
+        };
+      });
+
+      panel.querySelectorAll('[data-act="cal-toggle"]').forEach(function(b){
+        b.onclick = async function(){
+          S.entries = await B.toggle(b.dataset.id);
+          refresh();
+          var wr = withRunning(S.entries, S.rates);
+          var updatedDay = wr.filter(function(x){ return x.date === dateStr; });
+          showCalDayDetails(dateStr, updatedDay);
+        };
+      });
+    }
+
+    function renderClaims(wr){
+      var tp=0,lp=0,pd=0,up=0,dm={},mm={};
+      var totShiftHours = 0, totEarningsWithHours = 0;
+      wr.forEach(function(e){
+        var pay = e.pay;
+        var hrs = floatVal(e.hoursWorked);
+        tp+=(e.normal||0)+(e.express||0)+(e.transferQty||0);lp+=pay;
+        if(e.paid)pd+=pay;else up+=pay;
+
+        if(hrs > 0){
+          totShiftHours += hrs;
+          totEarningsWithHours += pay;
+        }
+
+        // Group by month YYYY-MM
+        var mKey = e.date ? e.date.substring(0,7) : 'Unknown';
+        if(!mm[mKey]) mm[mKey] = {earned:0, paid:0, unpaid:0, parcels:0, hours:0};
+        mm[mKey].earned += pay;
+        mm[mKey].parcels += (e.normal||0)+(e.express||0)+(e.transferQty||0);
+        mm[mKey].hours += hrs;
+        if(e.paid) mm[mKey].paid += pay; else mm[mKey].unpaid += pay;
+
+        if(e.transferredFrom&&e.transferQty>0){
+          var d=e.transferredFrom.trim();if(!dm[d])dm[d]={count:0,normal:0,express:0,pay:0};
+          dm[d].count+=e.transferQty;
+          if(e.transferType==='Normal'){dm[d].normal+=e.transferQty;dm[d].pay+=e.transferQty*S.rates.normal;}
+          if(e.transferType==='Express'){dm[d].express+=e.transferQty;dm[d].pay+=e.transferQty*S.rates.express;}
+        }
+      });
+      document.getElementById('cl-unpaid').textContent=$(up);
+      document.getElementById('cl-paid').textContent=$(pd);
+      document.getElementById('cl-parcels').textContent=tp.toLocaleString();
+      document.getElementById('cl-lifetime').textContent=$(lp);
+
+      var avgRate = totShiftHours > 0 ? (totEarningsWithHours / totShiftHours) : 0;
+      document.getElementById('cl-avgrate').textContent = avgRate > 0 ? ($(avgRate) + '/hr') : '$0.00/hr';
+      document.getElementById('cl-hours').textContent = totShiftHours.toFixed(1) + 'h';
+
+      // Calendar
+      renderCalendar(wr);
+
+      // Drivers
+      var dc=document.getElementById('c-drivers'),dk=Object.keys(dm);
+      var driverBadge=document.getElementById('drivers-count-badge');
+      if(driverBadge) driverBadge.textContent = dk.length + (dk.length === 1 ? ' driver' : ' drivers');
+      if(!dk.length){dc.innerHTML='<p style="font-size:12px;color:var(--ink-faint)">No driver transfers logged yet.</p>';}
+      else {
+        var t='<table class="driver-table"><tr><th>DRIVER</th><th>STD</th><th>EXP</th><th>TOTAL</th><th style="text-align:right">VALUE</th></tr>';
+        dk.forEach(function(d){var i=dm[d];t+='<tr><td style="font-weight:600">'+esc(d)+'</td><td>'+i.normal+'</td><td style="color:var(--stamp-orange)">'+i.express+'</td><td style="font-family:var(--font-mono);font-weight:600">'+i.count+'</td><td style="text-align:right;font-family:var(--font-mono);color:var(--stamp-green)">'+$(i.pay)+'</td></tr>';});
+        t+='</table>';dc.innerHTML=t;
+      }
+
+      // Monthly breakdown
+      var mc=document.getElementById('c-months'), mk=Object.keys(mm).sort().reverse();
+      if(!mk.length){mc.innerHTML='<p style="font-size:12px;color:var(--ink-faint)">No monthly data yet.</p>';}
+      else {
+        var mt='<table class="driver-table"><tr><th>MONTH</th><th>PARCELS</th><th>HOURS</th><th style="text-align:right">EARNED</th><th style="text-align:right">PAID</th><th style="text-align:right">UNPAID</th></tr>';
+        mk.forEach(function(m){
+          var i=mm[m];
+          var mParts=m.split('-'), y=mParts[0], mNum=parseInt(mParts[1],10);
+          var monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+          var mName = isNaN(mNum)?m:monthNames[mNum-1]+" "+y;
+          mt+='<tr><td style="font-weight:600">'+esc(mName)+'</td><td style="font-family:var(--font-mono)">'+i.parcels+'</td><td style="font-family:var(--font-mono);color:var(--ink-dim)">'+i.hours.toFixed(1)+'h</td><td style="text-align:right;font-family:var(--font-mono);font-weight:600">'+$(i.earned)+'</td><td style="text-align:right;font-family:var(--font-mono);color:var(--stamp-green)">'+$(i.paid)+'</td><td style="text-align:right;font-family:var(--font-mono);color:var(--stamp-orange)">'+$(i.unpaid)+'</td></tr>';
+        });
+        mt+='</table>';mc.innerHTML=mt;
+      }
+    }
+
+    function setup(){
+      // Navigation tabs (now all at bottom)
+      document.querySelectorAll('.btab').forEach(function(b){
+        b.onclick=function(){
+          document.querySelectorAll('.btab').forEach(function(x){x.classList.remove('active');});
+          document.querySelectorAll('.tab-view').forEach(function(x){x.classList.remove('active');});
+          b.classList.add('active');
+          var targetId = b.dataset.tab;
+          var targetEl = document.getElementById(targetId);
+          if(targetEl) targetEl.classList.add('active');
+          document.querySelector('.app-body').scrollTop = 0;
+          console.log('Switched to tab:', targetId);
+        };
+      });
+
+      // Filter buttons
+      document.querySelectorAll('.fbtn').forEach(function(b){
+        b.onclick=function(){
+          document.querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('active');});
+          b.classList.add('active');S.filter=b.dataset.filter;refresh();
+        };
+      });
+      document.getElementById('i-search').oninput=function(ev){S.search=ev.target.value;refresh();};
+
+      // Date — check Saturday mode on change
+      var fd=document.getElementById('f-date');fd.value=S.form.date;
+      fd.onchange=function(ev){S.form.date=ev.target.value;checkSaturdayMode();};
+      fd.oninput=function(ev){S.form.date=ev.target.value;checkSaturdayMode();};
+      document.getElementById('btn-today').onclick=function(){S.form.date=td();fd.value=S.form.date;checkSaturdayMode();};
+      document.getElementById('btn-yesterday').onclick=function(){S.form.date=yd();fd.value=S.form.date;checkSaturdayMode();};
+
+      // Shift time inputs & change events
+      document.getElementById('i-shift-start').onchange=function(ev){S.form.startTime=ev.target.value;updateShiftHours();updateLive();};
+      document.getElementById('i-shift-end').onchange=function(ev){S.form.endTime=ev.target.value;updateShiftHours();updateLive();};
+      document.getElementById('chk-shift-break').onchange=function(){updateShiftHours();updateLive();};
+
+      // Collapsible Shift Time Box
+      shiftBoxCollapsed = false;
+      var toggleShiftEl = document.getElementById('toggle-shift-box');
+      if(toggleShiftEl){
+        toggleShiftEl.onclick = function(){
+          shiftBoxCollapsed = !shiftBoxCollapsed;
+          var content = document.getElementById('shift-box-content');
+          var arrow = document.getElementById('shift-toggle-arrow');
+          if(shiftBoxCollapsed){
+            content.style.display = 'none';
+            if(arrow){ arrow.classList.add('collapsed'); arrow.textContent = '▶'; }
+          } else {
+            content.style.display = 'block';
+            if(arrow){ arrow.classList.remove('collapsed'); arrow.textContent = '▼'; }
+          }
+        };
+      }
+
+      // Collapsible Driver Transfers in Form (Collapsed by default)
+      xferBoxCollapsed = true;
+      var toggleXferEl = document.getElementById('toggle-xfer-box');
+      if(toggleXferEl){
+        toggleXferEl.onclick = function(){
+          xferBoxCollapsed = !xferBoxCollapsed;
+          var content = document.getElementById('xfer-box-content');
+          var arrow = document.getElementById('xfer-toggle-arrow');
+          if(xferBoxCollapsed){
+            content.style.display = 'none';
+            if(arrow){ arrow.classList.add('collapsed'); arrow.textContent = '▶'; }
+          } else {
+            content.style.display = 'block';
+            if(arrow){ arrow.classList.remove('collapsed'); arrow.textContent = '▼'; }
+          }
+        };
+      }
+
+      // Different Login Checkbox & Input
+      var chkDiffLogin = document.getElementById('chk-diff-login');
+      var boxDiffLogin = document.getElementById('box-diff-login');
+      var inDiffLogin = document.getElementById('i-diff-login');
+      if(chkDiffLogin && boxDiffLogin && inDiffLogin){
+        chkDiffLogin.onchange = function(){
+          if(chkDiffLogin.checked){
+            boxDiffLogin.style.display = 'block';
+            inDiffLogin.focus();
+          } else {
+            boxDiffLogin.style.display = 'none';
+            inDiffLogin.value = '';
+            S.form.deliveryLogin = '';
+          }
+        };
+        inDiffLogin.oninput = function(){
+          S.form.deliveryLogin = inDiffLogin.value;
+        };
+      }
+
+      // Calendar Navigation
+      var calPrev = document.getElementById('cal-prev');
+      var calNext = document.getElementById('cal-next');
+      var calTodayBtn = document.getElementById('cal-today-btn');
+      if(calPrev){
+        calPrev.onclick = function(){
+          calState.month--;
+          if(calState.month < 0){ calState.month = 11; calState.year--; }
+          renderCalendar(withRunning(S.entries, S.rates));
+        };
+      }
+      if(calNext){
+        calNext.onclick = function(){
+          calState.month++;
+          if(calState.month > 11){ calState.month = 0; calState.year++; }
+          renderCalendar(withRunning(S.entries, S.rates));
+        };
+      }
+      if(calTodayBtn){
+        calTodayBtn.onclick = function(){
+          var now = new Date();
+          calState.year = now.getFullYear();
+          calState.month = now.getMonth();
+          renderCalendar(withRunning(S.entries, S.rates));
+        };
+      }
+
+      // Collapsible Driver Transfers
+      var driversCollapsed = true;
+      var toggleDriversEl = document.getElementById('toggle-drivers');
+      if(toggleDriversEl){
+        toggleDriversEl.onclick = function(){
+          driversCollapsed = !driversCollapsed;
+          var wrap = document.getElementById('c-drivers-wrap');
+          var arrow = document.getElementById('drivers-toggle-arrow');
+          if(driversCollapsed){
+            wrap.style.display = 'none';
+            if(arrow){ arrow.classList.add('collapsed'); arrow.textContent = '▶'; }
+          } else {
+            wrap.style.display = 'block';
+            if(arrow){ arrow.classList.remove('collapsed'); arrow.textContent = '▼'; }
+          }
+        };
+      }
+
+      // Number inputs - select on focus for clean typing
+      function bindNum(el,key){
+        el.onfocus=function(){el.select();};
+        el.oninput=function(){var v=parseInt(el.value,10);if(isNaN(v)||v<0)v=0;S.form[key]=v;updateLive();};
+      }
+      var iN=document.getElementById('i-n'),iE=document.getElementById('i-e'),iT=document.getElementById('i-t'),iD=document.getElementById('i-driver');
+      bindNum(iN,'normal');bindNum(iE,'express');bindNum(iT,'transferQty');
+      iD.oninput=function(){S.form.transferredFrom=iD.value;};
+
+      document.getElementById('b-dn').onclick=function(){S.form.normal=Math.max(0,S.form.normal-1);iN.value=S.form.normal;updateLive();};
+      document.getElementById('b-un').onclick=function(){S.form.normal+=1;iN.value=S.form.normal;updateLive();};
+      document.getElementById('b-de').onclick=function(){S.form.express=Math.max(0,S.form.express-1);iE.value=S.form.express;updateLive();};
+      document.getElementById('b-ue').onclick=function(){S.form.express+=1;iE.value=S.form.express;updateLive();};
+      document.getElementById('b-dt').onclick=function(){S.form.transferQty=Math.max(0,S.form.transferQty-1);iT.value=S.form.transferQty;updateLive();};
+      document.getElementById('b-ut').onclick=function(){S.form.transferQty+=1;iT.value=S.form.transferQty;updateLive();};
+
+      document.getElementById('sel-tt').onchange=function(ev){
+        S.form.transferType=ev.target.value;
+        if(ev.target.value==='None'){S.form.transferQty=0;S.form.transferredFrom='';iT.value='0';iD.value='';}
+        updateLive();
+      };
+
+      // Add / Update entry
+      document.getElementById('btn-add').onclick=async function(){
+        var f=S.form;
+        var newId=S.editingId||(Date.now().toString(36)+Math.random().toString(36).slice(2,7));
+        var deliveryLoginVal = (f.deliveryLogin || '').trim();
+
+        if(S.isSat){
+          if(f.hoursWorked<=0)return;
+          var entry={id:newId,date:f.date,normal:f.normal,express:f.express,transferType:f.transferType,transferQty:f.transferQty,transferredFrom:f.transferredFrom?f.transferredFrom.trim():'',deliveryLogin:deliveryLoginVal,isSaturday:true,startTime:f.startTime||'07:00',endTime:f.endTime||'12:00',hoursWorked:f.hoursWorked,breakDeducted:f.breakDeducted,paid:f.paid,createdAt:f.createdAt};
+          S.entries=await B.save(entry);
+          S.form.normal=0;S.form.express=0;S.form.transferType='None';S.form.transferQty=0;S.form.transferredFrom='';
+          iN.value='0';iE.value='0';iT.value='0';iD.value='';document.getElementById('sel-tt').value='None';
+          // Reset default Saturday hours to 7am - 12:00pm
+          S.form.startTime='07:00';S.form.endTime='12:00';
+          document.getElementById('i-shift-start').value='07:00';
+          document.getElementById('i-shift-end').value='12:00';
+        }else{
+          if(f.normal===0&&f.express===0&&f.transferQty===0)return;
+          var entry={id:newId,date:f.date,normal:f.normal,express:f.express,transferType:f.transferType,transferQty:f.transferQty,transferredFrom:f.transferredFrom?f.transferredFrom.trim():'',deliveryLogin:deliveryLoginVal,isSaturday:false,startTime:f.startTime||'08:00',endTime:f.endTime||'17:30',hoursWorked:f.hoursWorked||9.0,breakDeducted:Boolean(f.breakDeducted),paid:f.paid,createdAt:f.createdAt};
+          S.entries=await B.save(entry);
+          S.form.normal=0;S.form.express=0;S.form.transferType='None';S.form.transferQty=0;S.form.transferredFrom='';
+          iN.value='0';iE.value='0';iT.value='0';iD.value='';document.getElementById('sel-tt').value='None';
+          // Reset default weekday hours to 8am - 5:30pm
+          S.form.startTime='08:00';S.form.endTime='17:30';
+          document.getElementById('i-shift-start').value='08:00';
+          document.getElementById('i-shift-end').value='17:30';
+        }
+
+        // Reset diff login
+        if(chkDiffLogin) chkDiffLogin.checked=false;
+        if(boxDiffLogin) boxDiffLogin.style.display='none';
+        if(inDiffLogin) inDiffLogin.value='';
+        S.form.deliveryLogin='';
+
+        // Reset date to today
+        S.form.date = td();
+        document.getElementById('f-date').value = S.form.date;
+
+        // Reset xfer box to collapsed
+        xferBoxCollapsed = true;
+        var xContent = document.getElementById('xfer-box-content');
+        var xArrow = document.getElementById('xfer-toggle-arrow');
+        if(xContent) xContent.style.display = 'none';
+        if(xArrow){ xArrow.classList.add('collapsed'); xArrow.textContent = '▶'; }
+
+        var wasEditing = Boolean(S.editingId);
+        var targetTab = editOriginTab;
+        S.editingId = null;
+        S.form.paid = false;
+        S.form.createdAt = null;
+        editOriginTab = null;
+
+        checkSaturdayMode();
+        refresh();
+        toast(wasEditing ? 'Entry updated' : 'Delivery added to manifest');
+
+        if(wasEditing && targetTab){
+          var returnTabBtn = document.querySelector('.btab[data-tab="' + targetTab + '"]');
+          if(returnTabBtn) returnTabBtn.click();
+        }
+      };
+
+      document.getElementById('btn-cancel-edit').onclick=function(){
+        var targetTab = editOriginTab;
+        S.editingId = null;
+        editOriginTab = null;
+        S.form = {date:td(),normal:0,express:0,transferType:'None',transferQty:0,transferredFrom:'',deliveryLogin:'',startTime:S.isSat?'07:00':'08:00',endTime:S.isSat?'12:00':'17:30',hoursWorked:S.isSat?4.5:9.0,breakDeducted:true,paid:false,createdAt:null};
+        document.getElementById('f-date').value = S.form.date;
+        iN.value = '0'; iE.value = '0'; iT.value = '0'; iD.value = ''; document.getElementById('sel-tt').value = 'None';
+        document.getElementById('i-shift-start').value = S.isSat ? '07:00' : '08:00';
+        document.getElementById('i-shift-end').value = S.isSat ? '12:00' : '17:30';
+
+        if(chkDiffLogin) chkDiffLogin.checked = false;
+        if(boxDiffLogin) boxDiffLogin.style.display = 'none';
+        if(inDiffLogin) inDiffLogin.value = '';
+
+        xferBoxCollapsed = true;
+        var xContent = document.getElementById('xfer-box-content');
+        var xArrow = document.getElementById('xfer-toggle-arrow');
+        if(xContent) xContent.style.display = 'none';
+        if(xArrow){ xArrow.classList.add('collapsed'); xArrow.textContent = '▶'; }
+
+        checkSaturdayMode();
+        toast('Edit cancelled');
+
+        if(targetTab){
+          var returnTabBtn = document.querySelector('.btab[data-tab="' + targetTab + '"]');
+          if(returnTabBtn) returnTabBtn.click();
+        }
+      };
+
+      // Batch mark paid
+      document.getElementById('btn-pay-all').onclick=async function(){if(!confirm('Mark all unpaid entries as PAID?'))return;S.entries=await B.markAll();refresh();toast('All outstanding marked paid');};
+
+      // Excel & Invoice
+      document.getElementById('btn-excel').onclick=async function(){toast('Exporting all entries to Excel…');var r=await B.excel();if(r&&r.success)toast('Manifest saved! ('+r.count+' total)');else if(r&&r.error)toast('Error: '+r.error);};
+      document.getElementById('btn-invoice').onclick=async function(){toast('Exporting unpaid invoice…');var r=await B.invoice();if(r&&r.success)toast('Invoice saved! ('+r.count+' unpaid)');else if(r&&r.error)toast('Error: '+r.error);};
+
+      // Theme
+      document.getElementById('btn-theme').onclick=function(){S.theme=S.theme==='dark'?'light':'dark';document.body.setAttribute('data-theme',S.theme);B.saveCfg(S.rates,S.theme);};
+
+      // Window controls (frameless)
+      document.getElementById('btn-minimize').onclick=function(){if(window.pywebview&&window.pywebview.api)window.pywebview.api.minimize_window();};
+      document.getElementById('btn-maximize').onclick=function(){if(window.pywebview&&window.pywebview.api)window.pywebview.api.toggle_maximize();};
+      document.getElementById('btn-close').onclick=function(){if(window.pywebview&&window.pywebview.api)window.pywebview.api.close_window();};
+
+      // Auth modal and user actions
+      function showAuthModal(){
+        var ov = document.getElementById('auth-modal-overlay');
+        var errEl = document.getElementById('auth-error-msg');
+        if(errEl) errEl.style.display = 'none';
+        if(ov) ov.style.display = 'flex';
+        var uIn = document.getElementById('auth-username');
+        if(uIn) setTimeout(function(){ uIn.focus(); }, 60);
+      }
+
+      function hideAuthModal(){
+        var ov = document.getElementById('auth-modal-overlay');
+        if(ov) ov.style.display = 'none';
+      }
+
+      var btnAuthOpen = document.getElementById('btn-auth-open');
+      if(btnAuthOpen) btnAuthOpen.onclick = function(){ showAuthModal(); };
+
+      var btnAuthCancel = document.getElementById('btn-auth-cancel');
+      if(btnAuthCancel) btnAuthCancel.onclick = function(){
+        hideAuthModal();
+      };
+
+      var formAuth = document.getElementById('form-auth');
+      if(formAuth){
+        formAuth.onsubmit = async function(ev){
+          ev.preventDefault();
+          var errEl = document.getElementById('auth-error-msg');
+          var u = document.getElementById('auth-username').value.trim();
+          var p = document.getElementById('auth-password').value;
+          if(errEl) errEl.style.display = 'none';
+
+          var endpoint = '/api/auth/login';
+          var payload = {username: u, password: p};
+
+          try {
+            var res = await fetch(endpoint, {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(payload)
+            });
+            var data = await res.json();
+            if(!res.ok || !data.success){
+              if(errEl){
+                errEl.textContent = data.error || 'Authentication failed';
+                errEl.style.display = 'block';
+              }
+              return;
+            }
+            // Success
+            hideAuthModal();
+            updateUserUI(data.user);
+            var d = await B.load();
+            S.entries = d.entries || [];
+            if(d.settings && d.settings.rates) S.rates = d.settings.rates;
+            if(d.settings && d.settings.theme){ S.theme = d.settings.theme; document.body.setAttribute('data-theme', S.theme); }
+            refresh();
+            toast('Welcome, ' + data.user.username + '!');
+          } catch(err) {
+            if(errEl){
+              errEl.textContent = 'Server connection error. Please try again.';
+              errEl.style.display = 'block';
+            }
+          }
+        };
+      }
+
+      var btnLogout = document.getElementById('btn-logout');
+      if(btnLogout){
+        btnLogout.onclick = async function(){
+          if(!confirm('Sign out of your account?')) return;
+          try {
+            await fetch('/api/auth/logout', {method: 'POST'});
+          } catch(e){}
+          updateUserUI(null);
+          S.entries = [];
+          refresh();
+          showAuthModal();
+          toast('Signed out');
+        };
+      }
+
+      // Settings modal
+      document.getElementById('btn-gear').onclick=function(){document.getElementById('cfg-n').value=S.rates.normal;document.getElementById('cfg-e').value=S.rates.express;document.getElementById('cfg-sat').value=S.rates.saturdayHourly||48.14;document.getElementById('modal-overlay').style.display='flex';};
+      document.getElementById('btn-modal-cancel').onclick=function(){document.getElementById('modal-overlay').style.display='none';};
+      document.getElementById('modal-overlay').onclick=function(ev){if(ev.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').style.display='none';};
+      document.getElementById('btn-modal-save').onclick=async function(){
+        var n=parseFloat(document.getElementById('cfg-n').value),x=parseFloat(document.getElementById('cfg-e').value),sh=parseFloat(document.getElementById('cfg-sat').value);
+        S.rates={normal:isNaN(n)?1.60:n,express:isNaN(x)?3.60:x,saturdayHourly:isNaN(sh)?48.14:sh};
+        document.getElementById('modal-overlay').style.display='none';
+        await B.saveCfg(S.rates,S.theme);checkSaturdayMode();refresh();toast('Rates saved');
+      };
+      document.getElementById('btn-clear-db').onclick=async function(){if(!confirm('Delete ALL manifest entries? Cannot be undone.'))return;S.entries=await B.clear();document.getElementById('modal-overlay').style.display='none';refresh();toast('All data cleared');};
+    }
+
+    async function init(){
+      if(!window.pywebview){
+        var wc = document.querySelector('.win-controls');
+        if(wc) wc.style.display = 'none';
+        var dragEl = document.querySelector('.drag-region');
+        if(dragEl) dragEl.style.cursor = 'default';
+      }
+      var d=await B.load();S.entries=d.entries||[];
+      if(d.settings&&d.settings.rates){S.rates=d.settings.rates;}
+      if(d.settings&&d.settings.theme){S.theme=d.settings.theme;document.body.setAttribute('data-theme',S.theme);}
+      setup();checkSaturdayMode();updateLive();refresh();
+    }
+    window.addEventListener('pywebviewready',function(){init();});
+    init();
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F5F5F5;
+    color: #1A1A1A;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-auspost bg-auspost-red px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-auspost-red-dark active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-auspost border border-auspost-gray-border bg-white px-5 py-2.5 text-sm font-semibold text-auspost-charcoal transition-all hover:bg-auspost-gray-light active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-auspost px-4 py-2 text-sm font-medium text-auspost-gray transition-all hover:bg-auspost-gray-light hover:text-auspost-charcoal active:scale-[0.98];
+  }
+
+  .input-field {
+    @apply w-full rounded-auspost border border-auspost-gray-border bg-white px-4 py-2.5 text-sm text-auspost-charcoal outline-none transition-all placeholder:text-auspost-gray/60 focus:border-auspost-red focus:ring-2 focus:ring-auspost-red/20;
+  }
+
+  .card {
+    @apply rounded-auspost border border-auspost-gray-border bg-white shadow-sm;
+  }
+
+  .stat-card {
+    @apply rounded-auspost border border-auspost-gray-border bg-white p-5 shadow-sm transition-all hover:shadow-md;
+  }
+
+  .tab-active {
+    @apply border-auspost-red text-auspost-red;
+  }
+
+  .tab-inactive {
+    @apply border-transparent text-auspost-gray hover:text-auspost-charcoal hover:border-auspost-gray-border;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+
+  .badge-success {
+    @apply bg-auspost-success-light text-auspost-success;
+  }
+
+  .badge-warning {
+    @apply bg-auspost-warning-light text-auspost-warning;
+  }
+
+  .badge-red {
+    @apply bg-auspost-red-light text-auspost-red;
+  }
+
+  .badge-neutral {
+    @apply bg-auspost-gray-light text-auspost-gray;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #E0E0E0;
+    border-radius: 3px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #6B6B6B;
+  }
+}
